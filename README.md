@@ -1,2 +1,4 @@
-# JAVA
-BITCamp JAVA class
+2018년 10월 프로젝트
+곽수지, 김나린, 이빛나, 최성수
+Tinder GUI
+
