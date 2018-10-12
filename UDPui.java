@@ -1,4 +1,4 @@
-import java.awt.*;
+import java.awt.*; //이부분수정함!!~!
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
