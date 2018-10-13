@@ -5,7 +5,7 @@ import java.io.*;
 import java.net.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-
+//ì†Œì¼“ ì—°ê²° ì™œ ì•ˆ ë˜ëŠ”ì§€ ì•„ì‹œëŠ” ë¶„..... ì¡´ã…‚ë°•.....
 
 public class Chat extends JFrame implements Runnable{
 	Container cp;
@@ -14,7 +14,7 @@ public class Chat extends JFrame implements Runnable{
 	JScrollPane sp;
 	JLabel Id;
     JTextField tf;
-	JButton bBack, cSend, bReport; //µÚ·Î °¡±â, ¸Ş½ÃÁö º¸³»±â, ½Å°í ¹öÆ°
+	JButton bBack, cSend, bReport; //ë’¤ë¡œ ê°€ê¸°, ë©”ì‹œì§€ ë³´ë‚´ê¸°, ì‹ ê³  ë²„íŠ¼
 	ImageIcon ii1, ii2;
 	String ip = "127.0.0.1";
 	int port = 5000;
@@ -38,7 +38,7 @@ public class Chat extends JFrame implements Runnable{
 		});
 		getContentPane().add(bBack);
 		
-		//´ëÈ­ÇÏ´Â »ó´ë¹æ ¾ÆÀÌµğ°¡ ¶ß°Ô ÇØ¾ß ÇÔ! (±¸Çö ¾È µÊ)
+		//ëŒ€í™”í•˜ëŠ” ìƒëŒ€ë°© ì•„ì´ë””ê°€ ëœ¨ê²Œ í•´ì•¼ í•¨! (êµ¬í˜„ ì•ˆ ë¨)
 		Id = new JLabel("Chat ID");
 		getContentPane().add(Id);
 		
@@ -76,13 +76,13 @@ public class Chat extends JFrame implements Runnable{
 			//try{
 			s = new Socket();
 			//}catch(Exception ie){
-			//	pln("¼ÒÄÏ »ı¼ºÀÌ ¾È µÈ »óÅÂ");
-			//} ÀÌ·¸°Ô ÇÏ¸é »ı¼ºµÊ
+			//	pln("ì†Œì¼“ ìƒì„±ì´ ì•ˆ ëœ ìƒíƒœ");
+			//} ì´ë ‡ê²Œ í•˜ë©´ ìƒì„±ë¨
 			try{
 			s.connect(new InetSocketAddress(ip, port));
 			}catch(Exception ie){
-				pln("¼ÒÄÏ ¿¬°áÀÌ ¾È µÈ »óÅÂ");
-			}//¿¬°á ¾È µÊ..
+				pln("ì†Œì¼“ ì—°ê²°ì´ ì•ˆ ëœ ìƒíƒœ");
+			}//ì—°ê²° ì•ˆ ë¨..
 			os = s.getOutputStream();
 			dos = new DataOutputStream(os);
 			is = s.getInputStream();
@@ -93,7 +93,7 @@ public class Chat extends JFrame implements Runnable{
 			Thread thread = new Thread(this);
 			thread.start();
 		}catch(UnknownHostException ne){
-			pln("[ ÇØ´ç ¼­¹ö¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù. ]");
+			pln("[ í•´ë‹¹ ì„œë²„ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ]");
 		}catch(IOException ie){
 		}
 	}
@@ -137,7 +137,7 @@ public class Chat extends JFrame implements Runnable{
 				ta.setCaretPosition(ta.getDocument().getLength());
 			}
 		}catch(IOException ie){
-			ta.append("[ ¼­¹ö°¡ ´Ù¿îµÇ¾ú½À´Ï´Ù. 3ÃÊ ÈÄ, ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù. ]");
+			ta.append("[ ì„œë²„ê°€ ë‹¤ìš´ë˜ì—ˆìŠµë‹ˆë‹¤. 3ì´ˆ í›„, í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤. ]");
 			try{
 				Thread.sleep(3000);
 				System.exit(0);
@@ -179,12 +179,12 @@ class ChatHandler implements ActionListener {
 		}else if(obj == c.cSend){
 			System.exit(0);
 		}else if(obj == c.bReport){
-			int answer = JOptionPane.showConfirmDialog(null, "½Å°íÇÏ½Ã°Ú½À´Ï±î?\n(½Å°í½Ã ´ëÈ­ ³»¿ëÀÌ ¸®Æ÷Æ®µÇ¸ç, ´ëÈ­°¡ Á¾·áµË´Ï´Ù.)",
-				"½Å°íÇÏ±â", JOptionPane.OK_CANCEL_OPTION);
+			int answer = JOptionPane.showConfirmDialog(null, "ì‹ ê³ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?\n(ì‹ ê³ ì‹œ ëŒ€í™” ë‚´ìš©ì´ ë¦¬í¬íŠ¸ë˜ë©°, ëŒ€í™”ê°€ ì¢…ë£Œë©ë‹ˆë‹¤.)",
+				"ì‹ ê³ í•˜ê¸°", JOptionPane.OK_CANCEL_OPTION);
 			if(answer == JOptionPane.YES_OPTION){
-				JOptionPane.showMessageDialog(null, "½Å°í°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù. ´ëÈ­¸¦ Á¾·áÇÕ´Ï´Ù.", "½Å°í¿Ï·á",
+				JOptionPane.showMessageDialog(null, "ì‹ ê³ ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤. ëŒ€í™”ë¥¼ ì¢…ë£Œí•©ë‹ˆë‹¤.", "ì‹ ê³ ì™„ë£Œ",
 					JOptionPane.INFORMATION_MESSAGE); System.exit(0);
-				//»ó´ë¹æ ´ëÈ­Ã¢µµ Á¾·áµÇ¾î¾ß ÇÔ... <--> ¿¬°áµÈ »óÅÂ¿¡¼­..(±¸Çö ¾È µÊ)
+				//ìƒëŒ€ë°© ëŒ€í™”ì°½ë„ ì¢…ë£Œë˜ì–´ì•¼ í•¨... <--> ì—°ê²°ëœ ìƒíƒœì—ì„œ..(êµ¬í˜„ ì•ˆ ë¨)
 			}
 		}
 	}
