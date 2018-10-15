@@ -108,7 +108,6 @@ class Login
 							JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 다시 확인하세요.", "로그인 실패", JOptionPane.ERROR_MESSAGE);  // 왜 무한 루프
 						 }
 					}
-			}
 		}catch(IOException ie){}
 	}
 
