@@ -15,7 +15,6 @@ class Login
 	JTextField id;
 	JPanel idPanel, pwPanel, loginPanel;
 	String loginid, loginpass;
-	boolean resultOk;
 
 	Login(){
 		loginUi();
