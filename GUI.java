@@ -31,7 +31,7 @@ class GUI extends JFrame{
 	String myName = "w1"; //로그인한 사람 이름. 여자w1~w10, 남자 m1~m10 내이름정하는법★★★★★★★★★★★★★★★★★★★★
 	int myIdx; //내 인덱스. 1~10번중 하나로 정해져 있음(로그인시 매칭됨)
 	int yourIdx = 1; //내가 지금 좋아요/싫어요를 판단하는 상대의 인덱스. 1에서 시작해서 키보드값 입력 할때마다 1씩 증가.
-	String yourName = "m2"; //내 성별과 반대되는 성별+yourIdx 상대방 이름 정하는 법★★★★★★★★★★★★★★★★★★★
+	String yourName = "m"; //내 성별과 반대되는 성별+yourIdx 상대방 이름 정하는 법★★★★★★★★★★★★★★★★★★★
 	String yourAnswer = ""; //상대방의 대답전체
 	boolean ask = false; //좋아요-좋아요면 true가 됨->대화 묻는 팝업 뜸
 
@@ -129,6 +129,7 @@ class GUI extends JFrame{
 	 class MyKeyListener extends KeyAdapter{ 
 		public void keyPressed(KeyEvent e){
 			try{
+				yourName = yourName+Integer.toString(yourIdx);
 				yourFile = new File(yourName+"_like.txt");
 				fr = new FileReader(yourFile);
 			}catch(FileNotFoundException fe){}
