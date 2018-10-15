@@ -3,22 +3,24 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.JOptionPane;
+import java.io.*;
+import java.util.*;
 
 class Login 
 {
 	JFrame f;
-	JLabel la,laId, laPw;
+	JLabel la,laId,laPw;
 	JPasswordField pw;
 	JButton b;
 	JTextField id;
 	JPanel idPanel, pwPanel, loginPanel;
+	File wlist;
+	BufferedReader br;
+	String line = "";
 
 	Login(){
 		loginUi();
-		//if fileWmÀ¸·Î ·Î±×ÀÎ ½Ã
-		//if FileMmÀ¸·Î ·Î±×ÀÎ ½Ã 
 	}
-
 
 	void loginUi(){
 		f = new JFrame();
@@ -31,18 +33,30 @@ class Login
 
 		idPanel = new JPanel();
 		pwPanel = new JPanel();
-		laId = new JLabel("¾ÆÀÌµğ    ");
-		laPw = new JLabel("ÆĞ½º¿öµå");
+		laId = new JLabel("ì•„ì´ë””    ");
+		laPw = new JLabel("íŒ¨ìŠ¤ì›Œë“œ");
 		id = new JTextField(10);
 		pw = new JPasswordField(10);
 		idPanel.add(laId);
 		idPanel.add(id);
 		pwPanel.add(laPw);
 		pwPanel.add(pw);
+		pw.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+				loginCheck();    
+            }
+        });
+
 
 		loginPanel = new JPanel();
-		b = new JButton("·Î±×ÀÎ");
+		b = new JButton("ë¡œê·¸ì¸");
 		loginPanel.add(b);
+		b.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+    
+            }
+        });
+		
 
 		f.add(idPanel,"North");
 		f.add(pwPanel,"Center");
@@ -55,11 +69,11 @@ class Login
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setVisible(true);
 
-		// -----------------------   Á¾·á ¿É¼Ç Ã¢ ------------------------------------------
+		// -----------------------   ì¢…ë£Œ ì˜µì…˜ ì°½ ------------------------------------------
 		f.addWindowListener(new WindowAdapter(){  
 			public void windowClosing(WindowEvent e){
 				int answer = JOptionPane.showConfirmDialog(
-					f, "Á¾·áÇÒ±î¿ä?", "¼±ÅÃ", JOptionPane.OK_CANCEL_OPTION);
+					f, "ì¢…ë£Œí• ê¹Œìš”?", "ì„ íƒ", JOptionPane.OK_CANCEL_OPTION);
 				if(answer == JOptionPane.YES_OPTION){
 					System.exit(-1);
 				}else{
@@ -68,6 +82,36 @@ class Login
 			}
 		});
 	}
+
+	
+	// -----------------------   ë¡œê·¸ì¸ ì‹œ ID / PW í™•ì¸ ì°½ ------------------------------------------  
+	void loginCheck(){ 
+		try{
+			 wlist = new File("wList.txt");
+			 br = new BufferedReader(new FileReader(wlist));
+		
+			while((line=br.readLine()) != null){
+				String sw[] = line.split("\\*");  // * ê¸°ì¤€ìœ¼ë¡œ ë¬¸ì¥ split 
+				//wid = sw[1];  // id ë°°ì—´ì— ì €ì¥
+				//wpw[] = sw[2];  // pw ë°°ì—´ì— ì €ì¥ 
+				
+				//for(String wL : sw){  // ì „ì²´ ë¦¬ìŠ¤íŠ¸ * ê¸°ì¤€ìœ¼ë¡œ split
+					 if(id.getText().equals(sw[1]) && new String (pw.getPassword()).equals(line)){
+						 System.out.println("ì—¬ê¸°");
+						     JOptionPane.showMessageDialog(null, "ë¡œê·¸ì¸ ì™„ë£Œ!");
+							 boolean check = true;
+							 if(check){
+								//f.setVisible(false);
+								f.dispose();
+								}                  
+						 }else {
+							JOptionPane.showMessageDialog(null, "ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ë¥¼ ë‹¤ì‹œ í™•ì¸í•˜ì„¸ìš”.", "ë¡œê·¸ì¸ ì‹¤íŒ¨", JOptionPane.ERROR_MESSAGE);  // ì™œ ë¬´í•œ ë£¨í”„
+						 }
+					}
+			}
+		}catch(IOException ie){}
+	}
+
 	public static void main(String[] args) 
 	{
 		new Login();
