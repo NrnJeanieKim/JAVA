@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 class GUI extends JFrame{
   String tinder ="/Users/Sungsu/Desktop/Tinder/";
+  JFrame jr;
   JPanel jp1,jp2,jp3,lower,upper;
   JButton leftBt,rightBt;
   JLabel logoLb, photoLb;
@@ -23,7 +24,7 @@ class GUI extends JFrame{
 	File myFile, yourFile; //내 좋/싫 저장하는 리스트, 상대방 리스트(사진 넘길때마다 새로 돌아감)
 	FileReader fr = null; //상대방 성별 리스트 읽기
 	FileWriter writer = null;
-	
+
 	final String LIKE = "1";
 	final String DISLIKE = "2";
 	String answer = ""; //좋으면 1, 싫으면 2
@@ -35,12 +36,12 @@ class GUI extends JFrame{
 	String yourAnswer = ""; //상대방의 대답전체
 	boolean ask = false; //좋아요-좋아요면 true가 됨->대화 묻는 팝업 뜸
 
-  class RightLeft implements ActionListener{
+  /*class RightLeft implements ActionListener{
     RightLeft(){
       leftBt.addActionListener(this);
       rightBt.addActionListener(this);
     }
-    public void actionPerformed(ActionEvent ae){
+    /*public void actionPerformed(ActionEvent ae){
       counter++;
       try{
         l.pick(counter,gender);
@@ -56,44 +57,9 @@ class GUI extends JFrame{
           // jp2.add(noOne);
           change();
       }
-	  public void keyPressed(KeyEvent e){
-			try{
-				yourName = yourName+Integer.toString(yourIdx);
-				yourFile = new File(yourName+"_like.txt");
-				fr = new FileReader(yourFile);
-			}catch(FileNotFoundException fe){}
-			if (yourFile.exists()){
-				br = new BufferedReader(fr);
-			}
-			int key = e.getKeyCode();
-			switch(key){
-				case KeyEvent.VK_LEFT: //싫어요
-				try{
-					answers.add(DISLIKE);
-					writer.write(DISLIKE);
-					writer.flush();
-				}catch(IOException ie){} break;
-				case KeyEvent.VK_RIGHT: //좋아요
-				try{
-					String line = "";//인덱스 키워가며 접근해야함★★★★★★★★★★★★★★★★★★★★★★★★★★
-					if (yourFile.exists()){
-						while((line = br.readLine())!=null){
-							yourAnswer = line;
-						}
-						if (yourAnswer.charAt(myIdx)=='1'){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
-							ask = true;
-							askChat();
-						}
-					}
-					answers.add(LIKE);
-					writer.write(LIKE);
-					writer.flush();
-				}catch(IOException ie){} break;
-			}
-			yourIdx+=1; //상대방 인덱스 하나 늘리기.
-		}
-    }
-  }
+    }*/
+
+
 
   void change(String ptPath){
     try{
@@ -122,7 +88,7 @@ class GUI extends JFrame{
       l.pick(counter,gender);
       leftBt = new JButton(new ImageIcon(ImageIO.read(new File(leftImage))));
       rightBt = new JButton(new ImageIcon(ImageIO.read(new File(rightImage))));
-      RightLeft rl = new RightLeft();
+      //RightLeft rl = new RightLeft();
       logoLb = new JLabel(new ImageIcon(ImageIO.read(new File(topBanner))));
       if(gender.equals("male"))img = new ImageIcon(ImageIO.read(new File(tinder+"mPhoto/"+l.ptPath)));
       else img = new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+l.ptPath)));
@@ -133,8 +99,8 @@ class GUI extends JFrame{
     ////////////TOP//////////////
     jp1 = new JPanel(new FlowLayout());
     jp1.add(logoLb);
-    Choose c = new Choose();
-    logoLb.addKeyListener(c.new MyKeyListener());
+    //Choose c = new Choose();
+    //logoLb.addKeyListener(c.new MyKeyListener());
     ///////////MIDDLE////////////
     upper = new JPanel(new FlowLayout());
     upper.add(proLb);
@@ -155,7 +121,10 @@ class GUI extends JFrame{
     init();
   }
   void init(){
-	addKeyListener(new RightLeft());
+    Container cp  = getContentPane();
+    cp.setFocusable(true);
+    cp.requestFocus();
+	  cp.addKeyListener(new MyKeyListener());
     setTitle("Tinder");
     setSize(800,500);
     setLocation(400,400);
@@ -163,9 +132,55 @@ class GUI extends JFrame{
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
   //내부클래스 KeyListener!!!!!!!
-	 /*class MyKeyListener extends KeyAdapter{ 
-		
-	  }*/
+	 class MyKeyListener extends KeyAdapter{
+     	  public void keyPressed(KeyEvent e){
+          System.out.println("key pressed");
+     			try{
+            counter++;
+              l.pick(counter,gender);
+              System.out.println(l.ptPath);
+              change(l.ptPath);
+
+     				yourName = yourName+Integer.toString(yourIdx);
+     				yourFile = new File(yourName+"_like.txt");
+     				fr = new FileReader(yourFile);
+     			}catch(FileNotFoundException fe){
+          }catch(NullPointerException ne){
+              System.out.println(" 매칭 할 사람이 없다");
+            }
+
+     			if (yourFile.exists()){
+     				br = new BufferedReader(fr);
+     			}
+     			int key = e.getKeyCode();
+     			switch(key){
+     				case KeyEvent.VK_LEFT: //싫어요
+     				try{
+     					answers.add(DISLIKE);
+     					writer.write(DISLIKE);
+     					writer.flush();
+     				}catch(IOException ie){} break;
+     				case KeyEvent.VK_RIGHT: //좋아요
+     				try{
+     					String line = "";//인덱스 키워가며 접근해야함★★★★★★★★★★★★★★★★★★★★★★★★★★
+     					if (yourFile.exists()){
+     						while((line = br.readLine())!=null){
+     							yourAnswer = line;
+     						}
+     						if (yourAnswer.charAt(myIdx)=='1'){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
+     							ask = true;
+     							askChat();
+     						}
+     					}
+     					answers.add(LIKE);
+     					writer.write(LIKE);
+     					writer.flush();
+     				}catch(IOException ie){} break;
+     			}
+     			yourIdx+=1; //상대방 인덱스 하나 늘리기.
+     		}
+       }
+
 	  void askChat(){
 		  if (ask){ //대화묻는팝업창띄우기.
 			new AskChat(this);
@@ -176,6 +191,7 @@ class GUI extends JFrame{
   }
 }
 
+
 class AskChat extends JFrame{ //팝업창 띄우기 위한 클래스. Choose외부.
 	 GUI gui; //띄우고 나서 cs.ask = false로 만들어줘야 함.
 	 JPanel upPanel, middlePanel, downPanel; //매치, 하트, 대화/계속고르기 부착되는 JPanel
@@ -184,7 +200,7 @@ class AskChat extends JFrame{ //팝업창 띄우기 위한 클래스. Choose외�
 	 Container cp;
 	 AskChat(GUI gui){
 		 this.gui = gui;
-		 init();			  
+		 init();
 	  }
 	 void init(){
 		cp = getContentPane();
