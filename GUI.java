@@ -56,8 +56,45 @@ class GUI extends JFrame{
           // jp2.add(noOne);
           change();
       }
+	  public void keyPressed(KeyEvent e){
+			try{
+				yourName = yourName+Integer.toString(yourIdx);
+				yourFile = new File(yourName+"_like.txt");
+				fr = new FileReader(yourFile);
+			}catch(FileNotFoundException fe){}
+			if (yourFile.exists()){
+				br = new BufferedReader(fr);
+			}
+			int key = e.getKeyCode();
+			switch(key){
+				case KeyEvent.VK_LEFT: //싫어요
+				try{
+					answers.add(DISLIKE);
+					writer.write(DISLIKE);
+					writer.flush();
+				}catch(IOException ie){} break;
+				case KeyEvent.VK_RIGHT: //좋아요
+				try{
+					String line = "";//인덱스 키워가며 접근해야함★★★★★★★★★★★★★★★★★★★★★★★★★★
+					if (yourFile.exists()){
+						while((line = br.readLine())!=null){
+							yourAnswer = line;
+						}
+						if (yourAnswer.charAt(myIdx)=='1'){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
+							ask = true;
+							askChat();
+						}
+					}
+					answers.add(LIKE);
+					writer.write(LIKE);
+					writer.flush();
+				}catch(IOException ie){} break;
+			}
+			yourIdx+=1; //상대방 인덱스 하나 늘리기.
+		}
     }
   }
+
   void change(String ptPath){
     try{
       if(gender.equals("female"))photoLb.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+ptPath))));
@@ -118,7 +155,7 @@ class GUI extends JFrame{
     init();
   }
   void init(){
-	addKeyListener(new MyKeyListener());
+	addKeyListener(new RightLeft());
     setTitle("Tinder");
     setSize(800,500);
     setLocation(400,400);
@@ -126,44 +163,9 @@ class GUI extends JFrame{
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
   //내부클래스 KeyListener!!!!!!!
-	 class MyKeyListener extends KeyAdapter{ 
-		public void keyPressed(KeyEvent e){
-			try{
-				yourName = yourName+Integer.toString(yourIdx);
-				yourFile = new File(yourName+"_like.txt");
-				fr = new FileReader(yourFile);
-			}catch(FileNotFoundException fe){}
-			if (yourFile.exists()){
-				br = new BufferedReader(fr);
-			}
-			int key = e.getKeyCode();
-			switch(key){
-				case KeyEvent.VK_LEFT: //싫어요
-				try{
-					answers.add(DISLIKE);
-					writer.write(DISLIKE);
-					writer.flush();
-				}catch(IOException ie){} break;
-				case KeyEvent.VK_RIGHT: //좋아요
-				try{
-					String line = "";//인덱스 키워가며 접근해야함★★★★★★★★★★★★★★★★★★★★★★★★★★
-					if (yourFile.exists()){
-						while((line = br.readLine())!=null){
-							yourAnswer = line;
-						}
-						if (yourAnswer.charAt(myIdx)=='1'){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
-							ask = true;
-							askChat();
-						}
-					}
-					answers.add(LIKE);
-					writer.write(LIKE);
-					writer.flush();
-				}catch(IOException ie){} break;
-			}
-			yourIdx+=1; //상대방 인덱스 하나 늘리기.
-		}
-	  }
+	 /*class MyKeyListener extends KeyAdapter{ 
+		
+	  }*/
 	  void askChat(){
 		  if (ask){ //대화묻는팝업창띄우기.
 			new AskChat(this);
