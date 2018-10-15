@@ -14,9 +14,8 @@ class Login
 	JButton b;
 	JTextField id;
 	JPanel idPanel, pwPanel, loginPanel;
-	File wlist;
-	BufferedReader br;
-	String line = "";
+	String loginid, loginpass;
+	boolean resultOk;
 
 	Login(){
 		loginUi();
@@ -87,29 +86,30 @@ class Login
 	// -----------------------   로그인 시 ID / PW 확인 창 ------------------------------------------  
 	void loginCheck(){ 
 		try{
-			 wlist = new File("wList.txt");
-			 br = new BufferedReader(new FileReader(wlist));
-		
-			while((line=br.readLine()) != null){
-				String sw[] = line.split("\\*");  // * 기준으로 문장 split 
-				//wid = sw[1];  // id 배열에 저장
-				//wpw[] = sw[2];  // pw 배열에 저장 
+			BufferedReader br = new BufferedReader(new FileReader("wList.txt"));	
+			String s;
+				while((s=br.readLine()) != null){
+					String [] sArray  = s.split("\\*");
+					loginid = String.valueOf(sArray[1]);
+					loginpass = String.valueOf(sArray[2]);
 				
-				//for(String wL : sw){  // 전체 리스트 * 기준으로 split
-					 if(id.getText().equals(sw[1]) && new String (pw.getPassword()).equals(line)){
-						 System.out.println("여기");
-						     JOptionPane.showMessageDialog(null, "로그인 완료!");
+					if(id.getText().equals(loginid) && new String (pw.getPassword()).equals(loginpass)){
+						JOptionPane.showMessageDialog(null, "로그인 완료!");
 							 boolean check = true;
 							 if(check){
-								//f.setVisible(false);
-								f.dispose();
-								}                  
-						 }else {
-							JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 다시 확인하세요.", "로그인 실패", JOptionPane.ERROR_MESSAGE);  // 왜 무한 루프
-						 }
-					}
-		}catch(IOException ie){}
+								f.setVisible(false);
+								break;
+							 }
+					}else {
+							JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 다시 확인하세요.", "로그인 실패", JOptionPane.ERROR_MESSAGE);  
+							id.setText("");
+							pw.setText("");
+							break;
+					 }  // 작성한 ID / PW 초기화 ------------------- 근데 커서가 ID로 안가고 PW로 감.. ㅠ
+				}
+			}catch(IOException ie){}
 	}
+
 
 	public static void main(String[] args) 
 	{
