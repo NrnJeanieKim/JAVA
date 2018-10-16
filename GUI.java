@@ -5,7 +5,7 @@ import javax.imageio.*;
 import java.io.*;
 import java.util.ArrayList;
 class GUI extends JFrame{
-  String tinder ="/Users/Sungsu/Desktop/Tinder/";
+  String tinder ="";
   JFrame jr;
   JPanel jp1,jp2,jp3,lower,upper;
   JButton leftBt,rightBt;
@@ -99,8 +99,6 @@ class GUI extends JFrame{
     ////////////TOP//////////////
     jp1 = new JPanel(new FlowLayout());
     jp1.add(logoLb);
-    //Choose c = new Choose();
-    //logoLb.addKeyListener(c.new MyKeyListener());
     ///////////MIDDLE////////////
     upper = new JPanel(new FlowLayout());
     upper.add(proLb);
@@ -187,7 +185,7 @@ class GUI extends JFrame{
 		  }
 	  }
   public static void main(String[] args) {
-    GUI g = new GUI();
+     GUI g = new GUI();
   }
 }
 
