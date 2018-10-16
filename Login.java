@@ -100,8 +100,9 @@ class Login
 				}if(i==0)br = new BufferedReader(new FileReader("mList.txt"));
 				else if(i==1){
 					JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 다시 확인하세요.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+					id.setText(""); // 틀리면 id, pw창 초기화 
 					pw.setText("");
-					id.setText("");
+					id.requestFocus(); // 초기화 시 id창에 커서 자동으로 가게 설정
 				}
 
 			}
