@@ -14,7 +14,8 @@ class Login
 	JButton b;
 	JTextField id;
 	JPanel idPanel, pwPanel, loginPanel;
-	String loginid, loginpass;
+	String name, loginid, loginpass;
+	String [] sArray;
 
 	Login(){
 		loginUi();
@@ -85,9 +86,10 @@ class Login
 			outer:
 			for(int i = 0;i<=1;i++){
 				while((s=br.readLine())!=null){
-					String [] sArray  = s.split("\\*");
-					loginid = String.valueOf(sArray[1]);
-					loginpass = String.valueOf(sArray[2]);
+					sArray  = s.split("\\*");
+					loginid = String.valueOf(sArray[1]); // index[1] ID저장
+					loginpass = String.valueOf(sArray[2]); // index[2] PW 저장 
+					name = String.valueOf(sArray[0]);  // index[0] 이름 저장 
 
 					if(id.getText().equals(loginid) && new String (pw.getPassword()).equals(loginpass)){
 						JOptionPane.showMessageDialog(null, "로그인 완료!");
