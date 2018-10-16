@@ -8,24 +8,29 @@ public class UDPMultiReceive extends Thread {
 	private int portNumber = 0;
 	private MulticastSocket multicastSocket = null;
 	private DatagramPacket datagramPacket = null;
+	static int first = 1; //staticìœ¼ë¡œ ë§Œë“¤ë©´..........ìƒëŒ€ë°©í•œí…ŒëŠ”ì•ˆëœ¨ë‚˜..????
 
 	public UDPMultiReceive(InetAddress tmpInetAddress, int tmpportNumber) {
 		inetAddress = tmpInetAddress;
 		portNumber = tmpportNumber;
 	}
 	public void run() {
-		byte[] buffer = new byte[512];// 1. Data¸¦ ¹ÞÀ» ¹öÆÛ »ý¼º
+		byte[] buffer = new byte[512];// 1. Dataë¥¼ ë°›ì„ ë²„í¼ ìƒì„±
 		try {
-			multicastSocket = new MulticastSocket(portNumber);// 2. DatagramPacketÀ» ¹Þ±â À§ÇÑ Socket »ý¼º
-			multicastSocket.joinGroup(inetAddress);// 3. ±×·ì µî·Ï - Åë½Å °¡´ÉÇÏ°Ô ÇÔ
-			while(true) {	// ¸Þ½ÃÁö °è¼Ó ¹ÞÀ½
-	// 4. Data¸¦ ¹ÞÀ» Packet »ý¼º
+			multicastSocket = new MulticastSocket(portNumber);// 2. DatagramPacketì„ ë°›ê¸° ìœ„í•œ Socket ìƒì„±
+			multicastSocket.joinGroup(inetAddress);// 3. ê·¸ë£¹ ë“±ë¡ - í†µì‹  ê°€ëŠ¥í•˜ê²Œ í•¨
+			while(true) {	// ë©”ì‹œì§€ ê³„ì† ë°›ìŒ
+	// 4. Dataë¥¼ ë°›ì„ Packet ìƒì„±
 				datagramPacket = new DatagramPacket(buffer, buffer.length);
-	// 5. ¸ÖÆ¼Ä³½ºÆ®¿¡ Á¸ÀçÇÏ´Â ¸Þ½ÃÁö ¹ÞÀ½
+	// 5. ë©€í‹°ìºìŠ¤íŠ¸ì— ì¡´ìž¬í•˜ëŠ” ë©”ì‹œì§€ ë°›ìŒ
 				multicastSocket.receive(datagramPacket);
-	// 6. ¼ö½ÅµÈ ¸Þ½ÃÁö Ãâ·Â
+	// 6. ìˆ˜ì‹ ëœ ë©”ì‹œì§€ ì¶œë ¥
+				if (first ==1)	{
+					new AskYes();
+				}
 				String msg = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
-				System.out.println("¹ÞÀº ¸Þ½ÃÁö ==> " + msg);
+				System.out.println("ë°›ì€ ë©”ì‹œì§€ ==> " + msg);
+				first++;
 			}
 		} catch (IOException e) {
 			System.err.println(e);
@@ -35,3 +40,4 @@ public class UDPMultiReceive extends Thread {
 			}
 		}
 }
+
