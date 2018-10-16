@@ -103,7 +103,6 @@ public class Login
 					id.requestFocus();
 				}
 			}
-			System.out.println(name+loginid+loginpass);
 			}catch(IOException ie){}
 	}
 }
