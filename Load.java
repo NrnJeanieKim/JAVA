@@ -11,7 +11,7 @@ class Load{
   String profile;
 
   Load(){}
-  void pick(int s, String gender){
+  void pick(int s, String gender){////////////남녀를 구분하여 파일을 불러옴
     String genderChecker = gender;
     if(gender.equals("male"))path = "mList.txt";
     else path = "wList.txt";
@@ -34,15 +34,17 @@ class Load{
     }catch(IOException ie){
     }
   }
-  void getInfo(String line){
+  String index;
+  void getInfo(String line){////해당 유저의 정보를 나눠 저
     String[] info = line.split("\\*");
     for(String i : info)System.out.println(i);
-    String index = info[0];
+    index = info[0];
     String id = info[1];
     String pw = info[2];
     ptPath = info[3];
     String age = info[4];
     String itr = info[5];
     profile = id+age+itr;
+
   }
 }
