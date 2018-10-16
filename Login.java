@@ -106,11 +106,4 @@ public class Login
 			System.out.println(name+loginid+loginpass);
 			}catch(IOException ie){}
 	}
-
-	
-	public static void main(String[] args)
-	{
-		new Login();
-	}
-
 }
