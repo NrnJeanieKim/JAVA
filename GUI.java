@@ -17,7 +17,7 @@ class GUI extends JFrame{
   int counter = 1;
   ImageIcon img;
   JLabel proLb;
-  String gender;
+
   /////////////
   //String FName = ""; //여자면 mList.txt, 남자면 wList.txt 읽기. 아이디 인덱스 맞춰서...
 	BufferedReader br = null;
@@ -29,10 +29,10 @@ class GUI extends JFrame{
 	final String DISLIKE = "2";
 	String answer = ""; //좋으면 1, 싫으면 2
 	ArrayList<String> answers;
-	String myName = "w1"; //로그인한 사람 이름. 여자w1~w10, 남자 m1~m10 내이름정하는법★★★★★★★★★★★★★★★★★★★★
-	int myIdx; //내 인덱스. 1~10번중 하나로 정해져 있음(로그인시 매칭됨)
-	int yourIdx = 1; //내가 지금 좋아요/싫어요를 판단하는 상대의 인덱스. 1에서 시작해서 키보드값 입력 할때마다 1씩 증가.
-	String yourName = "m"; //내 성별과 반대되는 성별+yourIdx 상대방 이름 정하는 법★★★★★★★★★★★★★★★★★★★
+	String yourName = ""; //로그인한 사람 이름. 여자w1~w10, 남자 m1~m10 내이름정하는법★★★★★★★★★★★★★★★★★★★★
+	String myIdx; //내 인덱스. 1~10번중 하나로 정해져 있음(로그인시 매칭됨)
+	String yourIdx; //내가 지금 좋아요/싫어요를 판단하는 상대의 인덱스. 1에서 시작해서 키보드값 입력 할때마다 1씩 증가.
+	String myName = ""; //내 성별과 반대되는 성별+yourIdx 상대방 이름 정하는 법★★★★★★★★★★★★★★★★★★★
 	String yourAnswer = ""; //상대방의 대답전체
 	boolean ask = false; //좋아요-좋아요면 true가 됨->대화 묻는 팝업 뜸
 
@@ -44,7 +44,7 @@ class GUI extends JFrame{
     /*public void actionPerformed(ActionEvent ae){
       counter++;
       try{
-        l.pick(counter,gender);
+        l.pick(counter,myName);
         System.out.println(l.ptPath);
         change(l.ptPath);
       }catch(NullPointerException ne){
@@ -61,10 +61,15 @@ class GUI extends JFrame{
 
 
 
-  void change(String ptPath){
+  void change(int counter,String gender){///////프로필 사진 및 내용 전환
     try{
-      if(gender.equals("female"))photoLb.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+ptPath))));
-      else photoLb.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"mPhoto/"+ptPath))));
+      if(gender.equals("female")){
+        l.pick(counter,"male");
+        photoLb.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"mPhoto/"+l.ptPath))));
+      }else {
+        l.pick(counter,"female");
+        photoLb.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+l.ptPath))));
+      }
       proLb.setText(l.profile);
     }catch(IOException ie){
     }
@@ -77,21 +82,31 @@ class GUI extends JFrame{
     }catch(IOException ie){
     }
   }
-
-  GUI(){
-	myFile = new File(myName+"_like.txt"); //내 좋/싫 저장하는 리스트
-	answers = new ArrayList<String>();
+  String fName;
+  GUI(String name){
+    myName = name;
+    fName = name;
+    myIdx = myName.substring(1);
+    if(myName.contains("w"))myName = "female";
+    else myName = "male";
+	  myFile = new File(fName+"_like.txt"); //내 좋/싫 저장하는 리스트
+	  answers = new ArrayList<String>();
     try{
-	  writer = new FileWriter(myFile, true);
-      gender = "female";
+	  writer = new FileWriter(myFile, false);
+
       l = new Load();
-      l.pick(counter,gender);
+      l.pick(Integer.parseInt(myIdx),myName);
       leftBt = new JButton(new ImageIcon(ImageIO.read(new File(leftImage))));
       rightBt = new JButton(new ImageIcon(ImageIO.read(new File(rightImage))));
       //RightLeft rl = new RightLeft();
       logoLb = new JLabel(new ImageIcon(ImageIO.read(new File(topBanner))));
-      if(gender.equals("male"))img = new ImageIcon(ImageIO.read(new File(tinder+"mPhoto/"+l.ptPath)));
-      else img = new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+l.ptPath)));
+      if(myName.equals("male")){
+        l.pick(1,"female");
+        img = new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+l.ptPath)));
+      }else{
+        l.pick(1,"male");
+        img = new ImageIcon(ImageIO.read(new File(tinder+"mPhoto/"+l.ptPath)));
+      }
       photoLb= new JLabel(img);
       proLb = new JLabel(l.profile);
     }catch(IOException ie){
@@ -135,18 +150,16 @@ class GUI extends JFrame{
           System.out.println("key pressed");
      			try{
             counter++;
-              l.pick(counter,gender);
-              System.out.println(l.ptPath);
-              change(l.ptPath);
-
-     				yourName = yourName+Integer.toString(yourIdx);
-     				yourFile = new File(yourName+"_like.txt");
+              System.out.println(myName);
+              change(counter,myName);
+     				String ptName = myName+myIdx;
+     				yourFile = new File(l.index+"_like.txt");
      				fr = new FileReader(yourFile);
      			}catch(FileNotFoundException fe){
           }catch(NullPointerException ne){
               System.out.println(" 매칭 할 사람이 없다");
+              return;
             }
-
      			if (yourFile.exists()){
      				br = new BufferedReader(fr);
      			}
@@ -154,7 +167,6 @@ class GUI extends JFrame{
      			switch(key){
      				case KeyEvent.VK_LEFT: //싫어요
      				try{
-     					answers.add(DISLIKE);
      					writer.write(DISLIKE);
      					writer.flush();
      				}catch(IOException ie){} break;
@@ -162,15 +174,15 @@ class GUI extends JFrame{
      				try{
      					String line = "";//인덱스 키워가며 접근해야함★★★★★★★★★★★★★★★★★★★★★★★★★★
      					if (yourFile.exists()){
+
      						while((line = br.readLine())!=null){
      							yourAnswer = line;
      						}
-     						if (yourAnswer.charAt(myIdx)=='1'){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
+     						if (yourAnswer.charAt(Integer.parseInt(myIdx))=='1'){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
      							ask = true;
      							askChat();
      						}
      					}
-     					answers.add(LIKE);
      					writer.write(LIKE);
      					writer.flush();
      				}catch(IOException ie){} break;
@@ -184,9 +196,6 @@ class GUI extends JFrame{
 			new AskChat(this);
 		  }
 	  }
-  public static void main(String[] args) {
-     // GUI g = new GUI();
-  }
 }
 
 
