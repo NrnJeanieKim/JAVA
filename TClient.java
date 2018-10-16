@@ -6,36 +6,35 @@ import java.net.UnknownHostException;
 
 
 public class TClient {
-	 
-	 public static void main(String[] args) {
+	TClient(){
 		InetAddress inetAddress = null;	
 		  try{
-			  inetAddress = InetAddress.getByName("224.1.1.0"); // 224.0.0.0 to 239.255.255.255 π¸¿ß ªÁøÎ«ÿæﬂ ∏÷∆ºº“ƒœ µ ...
+			  inetAddress = InetAddress.getByName("224.1.1.0"); // 224.0.0.0 to 239.255.255.255 Î≤îÏúÑ ÏÇ¨Ïö©Ìï¥Ïïº Î©ÄÌã∞ÏÜåÏºì Îê®...
 		  }catch(UnknownHostException ue){
-			  System.out.println("ø√πŸ∏£¡ˆ æ ¿∫ æ∆¿Ã««");}
+			  System.out.println("Ïò¨Î∞îÎ•¥ÏßÄ ÏïäÏùÄ ÏïÑÏù¥Ìîº");}
 		  BufferedReader br = null;
 		  UDPMultiReceive udpMultiReceive = null;
 		  UDPMultiSend udpMultiSend = null;
 		  int portNumber = 7120;
 		  String strId = "";
 	  try {
-		// 1. IP ¡÷º“, port π¯»£ ¿‘∑¬ ªÁ«◊ »Æ¿Œ
+		// 1. IP Ï£ºÏÜå, port Î≤àÌò∏ ÏûÖÎ†• ÏÇ¨Ìï≠ ÌôïÏù∏
 		  /*if(args.length != 2) {
-			System.out.println("IP, Port ¿‘∑¬ πŸ∂¯¥œ¥Ÿ.");
+			System.out.println("IP, Port ÏûÖÎ†• Î∞îÎûçÎãàÎã§.");
 			System.exit(0);
 		   }else {
-			inetAddress = InetAddress.getByName(args[0]); // ¡¢º”«“ ip
+			inetAddress = InetAddress.getByName(args[0]); // Ï†ëÏÜçÌï† ip
 			portNumber = Integer.parseInt(args[1]); // port
 		  }*/
-		   // 2. ID ¿‘∑¬
+		   // 2. ID ÏûÖÎ†•
 		   br = new BufferedReader(new InputStreamReader(System.in));
-		   System.out.print("id∏¶ ¿‘∑¬«œΩ√ø¿ ==> ");
+		   System.out.print("idÎ•º ÏûÖÎ†•ÌïòÏãúÏò§ ==> ");
 		   strId = br.readLine();
-		   System.out.println("*********** " + strId + "¥‘ ¡¢º” ***********");
-		   // 3. µ•¿Ã≈Õ πﬁ±‚
+		   System.out.println("*********** " + strId + "Îãò Ï†ëÏÜç ***********");
+		   // 3. Îç∞Ïù¥ÌÑ∞ Î∞õÍ∏∞
 		   udpMultiReceive = new UDPMultiReceive(inetAddress, portNumber);
 		   udpMultiReceive.start();
-		   // 4. µ•¿Ã≈Õ ∫∏≥ª±‚
+		   // 4. Îç∞Ïù¥ÌÑ∞ Î≥¥ÎÇ¥Í∏∞
 		   udpMultiSend = new UDPMultiSend(inetAddress, portNumber, strId);
 		   udpMultiSend.start();
 		  } catch (UnknownHostException e) {
@@ -43,5 +42,8 @@ public class TClient {
 	  } catch (IOException e) {
 	   e.printStackTrace();
 	  }
- }
+	}
+	 public static void main(String[] args) {
+		 new TClient();
+	 }
 }
