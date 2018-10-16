@@ -4,10 +4,10 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-
 public class TClient {
 	TClient(){
 		InetAddress inetAddress = null;	
+		Login in = new Login();
 		  try{
 			  inetAddress = InetAddress.getByName("224.1.1.0"); // 224.0.0.0 to 239.255.255.255 범위 사용해야 멀티소켓 됨...
 		  }catch(UnknownHostException ue){
@@ -37,6 +37,10 @@ public class TClient {
 		   // 4. 데이터 보내기
 		   udpMultiSend = new UDPMultiSend(inetAddress, portNumber, strId);
 		   udpMultiSend.start();
+			
+			System.out.println("name : "+in.name+", loginid : "+in.loginid+", loginpassword : "+in.loginpass);
+			 ////////////new GUI();
+
 		  } catch (UnknownHostException e) {
 	   e.printStackTrace();
 	  } catch (IOException e) {
