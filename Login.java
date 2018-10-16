@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import java.io.*;
 import java.util.*;
 
-class Login
+public class Login
 {
 	JFrame f;
 	JLabel la,laId,laPw;
@@ -14,14 +14,10 @@ class Login
 	JButton b;
 	JTextField id;
 	JPanel idPanel, pwPanel, loginPanel;
-	String name, loginid, loginpass;
-	String [] sArray;
+	static String name, loginid, loginpass;
+	static String [] sArray;
 
-	Login(){
-		loginUi();
-	}
-
-	void loginUi(){
+	public Login(){ 
 		f = new JFrame();
 		f.setLayout(new BorderLayout());
 		EtchedBorder eb = new EtchedBorder();
@@ -51,7 +47,7 @@ class Login
 		loginPanel.add(b);
 		b.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+				loginCheck();
             }
         });
 
@@ -79,17 +75,17 @@ class Login
 		});
 	}
 	// -----------------------   로그인 시 ID / PW 확인 창 ------------------------------------------
-	void loginCheck(){
+	public void loginCheck(){
 		try{
 			BufferedReader br = new BufferedReader(new FileReader("wList.txt"));
-			String s;
+			String s;  // txt 라인 읽기
 			outer:
 			for(int i = 0;i<=1;i++){
 				while((s=br.readLine())!=null){
-					sArray  = s.split("\\*");
-					loginid = String.valueOf(sArray[1]); // index[1] ID저장
-					loginpass = String.valueOf(sArray[2]); // index[2] PW 저장 
-					name = String.valueOf(sArray[0]);  // index[0] 이름 저장 
+					 sArray  = s.split("\\*");  //  * 기준으로 라인 split
+					 loginid = String.valueOf(sArray[1]);  // index[1] ID저장
+					 loginpass = String.valueOf(sArray[2]);  // index[2] PW 저장 
+					 name = String.valueOf(sArray[0]);  // index[0] 이름 저장 
 
 					if(id.getText().equals(loginid) && new String (pw.getPassword()).equals(loginpass)){
 						JOptionPane.showMessageDialog(null, "로그인 완료!");
@@ -102,18 +98,19 @@ class Login
 				}if(i==0)br = new BufferedReader(new FileReader("mList.txt"));
 				else if(i==1){
 					JOptionPane.showMessageDialog(null, "아이디 또는 비밀번호를 다시 확인하세요.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
-					id.setText(""); // 틀리면 id, pw창 초기화 
 					pw.setText("");
-					id.requestFocus(); // 초기화 시 id창에 커서 자동으로 가게 설정
+					id.setText("");
+					id.requestFocus();
 				}
-
 			}
+			System.out.println(name+loginid+loginpass);
 			}catch(IOException ie){}
 	}
 
-
+	
 	public static void main(String[] args)
 	{
 		new Login();
 	}
+
 }
