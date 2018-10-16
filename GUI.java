@@ -185,12 +185,12 @@ class GUI extends JFrame{
 		  }
 	  }
   public static void main(String[] args) {
-     GUI g = new GUI();
+     // GUI g = new GUI();
   }
 }
 
 
-class AskChat extends JFrame{ //팝업창 띄우기 위한 클래스. Choose외부.
+class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 위한 클래스. Choose외부.
 	 GUI gui; //띄우고 나서 cs.ask = false로 만들어줘야 함.
 	 JPanel upPanel, middlePanel, downPanel; //매치, 하트, 대화/계속고르기 부착되는 JPanel
 	 JLabel match, heart; //"It's Match!", 하트그림
@@ -200,6 +200,11 @@ class AskChat extends JFrame{ //팝업창 띄우기 위한 클래스. Choose외�
 		 this.gui = gui;
 		 init();
 	  }
+   public void actionPerformed(ActionEvent ae){
+      this.setVisible(false);
+     new TClient();
+
+   }
 	 void init(){
 		cp = getContentPane();
 		upPanel = new JPanel(); middlePanel = new JPanel(); downPanel = new JPanel();
@@ -209,6 +214,7 @@ class AskChat extends JFrame{ //팝업창 띄우기 위한 클래스. Choose외�
 		match = new JLabel("It's a Match!");
 		heart = new JLabel("heart"); //하트아이콘 넣기★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 		sendButton = new JButton("Send a Message");
+    sendButton.addActionListener(this);
 		keepButton = new JButton("Keep Playing");
 		//패널 내부는 FLOWLAYOUT으로바꿔서해야할듯??
 		upPanel.add(match);
