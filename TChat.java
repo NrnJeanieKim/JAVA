@@ -154,6 +154,12 @@ public class TChat extends JFrame implements Runnable{
 				}*/
 				String msg = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
 				if (msg.startsWith(myId)){
+				}else if(msg.equals(report)){
+					try{
+						ta.append("[ 비속어, 스팸 등의 이유로 신고 처리되었습니다.\n 5회 누적시 계정이 정지됩니다.\n 3초 후 대화가 종료됩니다.]");
+						Thread.sleep(3000);
+						this.dispose();
+					}catch(InterruptedException ie2){}
 				}else{
 					ta.append(msg+"\n");
 					//first++;
@@ -196,8 +202,10 @@ public class TChat extends JFrame implements Runnable{
 						JOptionPane.INFORMATION_MESSAGE);
 					//상대방 대화창도 종료
 					try{
-						dos.writeUTF("[ 비속어, 스팸 등의 이유로 신고 처리되었습니다.\n 5회 누적시 계정이 정지됩니다.\n 3초 후 대화가 종료됩니다.]");
-					}catch(IOException ie){
+						buffer = report.getBytes();
+						datagramPacket = new DatagramPacket(buffer, buffer.length, inetAddress, port);
+						datagramSocket.send(datagramPacket);
+						}catch(IOException ie){
 					}finally{
 						 System.exit(0);
 					}
