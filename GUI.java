@@ -80,7 +80,7 @@ class GUI extends JFrame{
     }
   }
   String fName;
-
+  GUI(){}
   GUI(String name){
     myName = name;
     fName = name;
@@ -146,7 +146,7 @@ class GUI extends JFrame{
   //내부클래스 KeyListener!!!!!!!
 	 class MyKeyListener extends KeyAdapter{
      	  public void keyPressed(KeyEvent e){
-          System.out.println("key pressed");
+
      			try{
             counter++;
               System.out.println(myName);
@@ -183,26 +183,34 @@ class GUI extends JFrame{
 
                      if (elements[Integer.parseInt(myIdx)].equals("1")){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
          					  		ask = true;
+
          						  	askChat();
+
          						 }
                    }
-     						}System.out.println("passed if ");
+     						}
      				   }catch(IOException ie){}
                  catch(ArrayIndexOutOfBoundsException se){break;}
+
             break;
      			}
+          if(keep)change(counter,myName);
           if(!ask)change(counter,myName);
           ask = false;
 
      		}
       }
-
+    Boolean keep =false;
 	  void askChat(){
 		  if (ask){ //대화묻는팝업창띄우기.
       // this.setVisible(false);
-			new AskChat(this);
+			AskChat ac = new AskChat(this,counter,myName);
+
+      if(ac.poped) keep = true;
 		  }
+
 	  }
+
 }
 
 class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 위한 클래스. Choose외부.
@@ -211,15 +219,31 @@ class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 �
 	 JLabel match, heart; //"It's Match!", 하트그림
 	 JButton sendButton, keepButton; //"send a message", "Keep Playing"
 	 Container cp;
-   int count;
-	 AskChat(GUI gui){
+   String myName;
+   int counter;
+   Boolean poped=false;
+
+	 AskChat(GUI gui,int counter, String myName){
 		 this.gui = gui;
+     this.counter = counter;
+     this.myName = myName;
 		 init();
 	  }
    public void actionPerformed(ActionEvent ae){
+     Object o = ae.getSource();
+     if(o==sendButton){
       this.setVisible(false);
       gui.setVisible(false);
        new TChat();
+     }else {
+       System.out.println("keep");
+       this.setVisible(false);
+       //new GUI().change(counter,myName);
+       poped = true;
+
+     }
+
+
    }
 
 	 void init(){
@@ -233,6 +257,7 @@ class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 �
 		sendButton = new JButton("Send a Message");
     sendButton.addActionListener(this);
 		keepButton = new JButton("Keep Playing");
+    keepButton.addActionListener(this);
 		//패널 내부는 FLOWLAYOUT으로바꿔서해야할듯??
 		upPanel.add(match);
 		middlePanel.add(heart);
