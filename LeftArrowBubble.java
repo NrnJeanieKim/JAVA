@@ -1,42 +1,36 @@
-//And the bubble class:
-
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.RenderingHints;
-import java.awt.geom.GeneralPath;
-import javax.swing.BoxLayout;
+import java.awt.geom.Area;
+import java.awt.geom.RoundRectangle2D;
 import javax.swing.JPanel;
 
 public class LeftArrowBubble extends JPanel {
-private static final long serialVersionUID = -5389178141802153305L;
-
-public LeftArrowBubble() {
-   this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
-}
-
-@Override
-protected void paintComponent(final Graphics g) {
-   final Graphics2D graphics2D = (Graphics2D) g;
-   RenderingHints qualityHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-   qualityHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-   graphics2D.setRenderingHints(qualityHints);
-   graphics2D.setPaint(new Color(80, 150, 180));
-   int width = getWidth();
-   int height = getHeight();
-   GeneralPath path = new GeneralPath();
-   path.moveTo(5, 10);
-   path.curveTo(5, 10, 7, 5, 0, 0);
-   path.curveTo(0, 0, 12, 0, 12, 5);
-   path.curveTo(12, 5, 12, 0, 20, 0);
-   path.lineTo(width - 10, 0);
-   path.curveTo(width - 10, 0, width, 0, width, 10);
-   path.lineTo(width, height - 10);
-   path.curveTo(width, height - 10, width, height, width - 10, height);
-   path.lineTo(15, height);
-   path.curveTo(15, height, 5, height, 5, height - 10);
-   path.lineTo(5, 15);
-   path.closePath();
-   graphics2D.fill(path);
-}
+   private static final long serialVersionUID = -5389178141802153305L;
+   private int radius = 10;
+   private int arrowSize = 12;
+   private int strokeThickness = 3;
+   private int padding = strokeThickness / 2;
+   @Override
+   protected void paintComponent(final Graphics g) {
+      final Graphics2D g2d = (Graphics2D) g;
+      g2d.setColor(new Color(0.5f, 0.8f, 1f));
+      int x = padding + strokeThickness + arrowSize;
+      int width = getWidth() - arrowSize - (strokeThickness * 2);
+      int bottomLineY = getHeight() - strokeThickness;
+      g2d.fillRect(x, padding, width, bottomLineY);
+      g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING,   RenderingHints.VALUE_ANTIALIAS_ON));
+      g2d.setStroke(new BasicStroke(strokeThickness));
+      RoundRectangle2D.Double rect = new RoundRectangle2D.Double(x, padding, width, bottomLineY, radius, radius);
+      Polygon arrow = new Polygon();
+      arrow.addPoint(20, 8);
+      arrow.addPoint(0, 10);
+      arrow.addPoint(20, 12);
+      Area area = new Area(rect);
+      area.add(new Area(arrow));
+      g2d.draw(area);
+   }
 }
