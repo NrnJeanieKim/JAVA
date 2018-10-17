@@ -24,7 +24,6 @@ public class Login
 
 		
 		f = new JFrame();
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		frameIcon = new ImageIcon("Tinder Logo.png");
 		f.setIconImage(frameIcon.getImage());
 
