@@ -75,25 +75,26 @@ public class TChat extends JFrame implements Runnable{
 	  th.start();
 	}
 	void init(){
-		chatPanel = new JPanel(); /////
-		pNorth = new JPanel();
-		loadImageIcon();
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 74, 3));
+		pNorth = new JPanel(); pCenter = new JPanel(); pSouth = new JPanel();
+		getContentPane().add(pNorth); getContentPane().add(pCenter); getContentPane().add(pSouth);
+		chatPanel = new JPanel(); /////
+		loadImageIcon();
 		
 		bBack = new JButton(ii1);
-		getContentPane().add(bBack);
+		pNorth.add(bBack);
 		
 		//대화하는 상대방 아이디가 뜨게 해야 함! (구현 안 됨)
 		Id = new JLabel("Chat ID");
-		getContentPane().add(Id);
+		pNorth.add(Id);
 		
 		bReport = new JButton(ii2);
-		getContentPane().add(bReport);
+		pNorth.add(bReport);
 		
 		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.PAGE_AXIS));
 		chatPanel.add(Box.createVerticalGlue());
 		//ta = new JTextArea(22, 34);
-		getContentPane().add(chatPanel);
+		pCenter.add(chatPanel);
 		getContentPane().setVisible(true);
 		//chatPanel.setEdichatPanelble(false);
 		chatPanel.setEnabled(true);
@@ -102,7 +103,7 @@ public class TChat extends JFrame implements Runnable{
 		scroll.setViewportView(chatPanel);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		add(scroll);
+		pCenter.add(scroll);
 
 
 		sp = new JScrollPane(chatPanel);
@@ -191,6 +192,48 @@ public class TChat extends JFrame implements Runnable{
 		repaint();
 	}
 
+	void appendR(String str) {
+		RightArrowBubble rightArrowBubble = new RightArrowBubble();
+
+		final int size = 500;
+		rightArrowBubble.setMaximumSize(new Dimension(size, size));
+
+		JLabel tac = new JLabel();
+
+		tac.setMaximumSize(new Dimension(size - 50, size - 50));
+
+		final int maximumSize = 56;
+		String textWithSeparators = "";
+		final StringTokenizer textTokenizer = new StringTokenizer(str, " \t\n\r", true);
+
+		while(textTokenizer.hasMoreTokens()) {
+			final String part = textTokenizer.nextToken();
+			for (int beginIndex = 0; beginIndex < part.length();
+				 beginIndex += maximumSize)
+				textWithSeparators += (beginIndex == 0 ? "" : " ")
+					+ part.substring(beginIndex,
+									 Math.min(part.length(),
+											  beginIndex + maximumSize));
+		}
+		System.out.println(textWithSeparators);
+
+		tac.setText("<html><body style='width:" + (size - 150) + "px;padding:15px;display:block;'>"
+						+ textWithSeparators + "</body></html>");
+
+		tac.setOpaque(false);
+		rightArrowBubble.add(tac, BorderLayout.NORTH);
+
+		chatPanel.add(rightArrowBubble);     
+
+		chatPanel.add(Box.createRigidArea(new Dimension(0,5)));
+		Rectangle rect = chatPanel.getBounds();
+		Rectangle r2 = scroll.getViewport().getVisibleRect();
+		chatPanel.scrollRectToVisible(new Rectangle((int) rect.getWidth(), 
+				(int) rect.getHeight(), (int) r2.getWidth(), (int) r2.getHeight()));
+		revalidate();
+		repaint();
+	}
+
 	public void run(){
 		byte[] buffer2 = new byte[512];
 		try{
@@ -242,7 +285,7 @@ public class TChat extends JFrame implements Runnable{
 				tf.setText("");
 				if(line.length() != 0 && !(line.equals(""))){
 					try{
-						append(myId+" : "+line+"\n"); //chat ID 앞에 채팅 뜨지 않게
+						appendR(myId+" : "+line+"\n"); //chat ID 앞에 채팅 뜨지 않게
 						line = myId+" : "+line;
 						buffer = line.getBytes();
 						datagramPacket = new DatagramPacket(buffer, buffer.length, inetAddress, port);
@@ -254,7 +297,7 @@ public class TChat extends JFrame implements Runnable{
 				tf.setText("");
 				if(line.length() != 0 && !(line.equals(""))){
 					try{
-						append(myId+" : "+line+"\n"); //chat ID 앞에 채팅 뜨지 않게
+						appendR(myId+" : "+line+"\n"); //chat ID 앞에 채팅 뜨지 않게
 						line = myId+" : "+line;
 						buffer = line.getBytes();
 						datagramPacket = new DatagramPacket(buffer, buffer.length, inetAddress, port);
