@@ -8,59 +8,137 @@ import java.util.*;
 
 public class Login
 {
-	JFrame f;
-	JLabel la,laId,laPw;
+	JLabel mainLa, textLa, laId, laPw;
 	JPasswordField pw;
-	JButton b;
+	JButton loginB;
 	JTextField id;
 	JPanel idPanel, pwPanel, loginPanel;
+	JPanel upPanel, downPanel;
+	JFrame f;
+	ImageIcon frameIcon, mainIcon, idIcon, pwIcon, loginIcon;
+
 	static String name, loginid, loginpass;
 	static String [] sArray;
 
 	public Login(){ 
+
+		
 		f = new JFrame();
-		f.setLayout(new BorderLayout());
-		EtchedBorder eb = new EtchedBorder();
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		frameIcon = new ImageIcon("Tinder Logo.png");
+		f.setIconImage(frameIcon.getImage());
 
-		la = new JLabel();
-		la.setBorder(eb);
-		f.add(la);
-
-		idPanel = new JPanel();
-		pwPanel = new JPanel();
-		laId = new JLabel("아이디    ");
-		laPw = new JLabel("패스워드");
-		id = new JTextField(10);
-		pw = new JPasswordField(10);
-		idPanel.add(laId);
-		idPanel.add(id);
-		pwPanel.add(laPw);
-		pwPanel.add(pw);
-		pw.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-				loginCheck();
-            }
-        });
-
-		loginPanel = new JPanel();
-		b = new JButton("로그인");
-		loginPanel.add(b);
-		b.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-				loginCheck();
-            }
-        });
-
-		f.add(idPanel,"North");
-		f.add(pwPanel,"Center");
-		f.add(loginPanel,"South");
-
-		f.setTitle("Login");
-		f.setSize(200,150);
+		f.setTitle("Tinder Login");
+		f.setSize(450,350);
 		f.setResizable(false);
-		f.setLocation(700,300);
+		f.setLocation(500,300);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//mainPanel = new JPanel();
+		//mainPanel.setLayout(null);
+		mainIcon = new ImageIcon("main.png");
+		mainLa = new JLabel(mainIcon);
+		f.add(mainLa);
+
+		setUI();
+
+		f.getContentPane().add(mainLa, BorderLayout.CENTER);
 		f.setVisible(true);
+	}
+	public void setUI(){
+		/*
+		// 상단 패널
+		upPanel = new JPanel();
+		upPanel.setLayout(null);
+		
+		upPanel.setBounds(-3, -2, 600, 123);
+		//upPanel.setBorder(new MatteBorder(-3, -2, 420, 124, new Color(-1)));
+		//mainPanel.add(upPanel,"North");
+		upPanel.setBorder(new EtchedBorder());
+		mainLa.add(upPanel);
+		*/
+
+		// 하단 패널
+		downPanel = new JPanel();
+		downPanel.setLayout(null);
+		downPanel.setBackground(new Color(-1));
+		downPanel.setBounds(8, 130, 420, 176); // 위치값. int x, int y, int width, int height
+		downPanel.setBorder(new EtchedBorder());
+		mainLa.add(downPanel);
+		//mainPanel.add(downPanel,"South");
+
+		/*// 상단 패널에 글씨
+		textLa = new JLabel();
+		textLa.setText("아이디와 패스워드를 입력해주세요");
+		textLa.setFont(new Font("돋움", 1, 15));
+		textLa.setForeground(new Color(0x0000FF));
+		textLa.setBounds(108, 84, 239, 16);
+		upPanel.add(textLa);*/
+
+
+		// 하단 패널에 들어갈 내용 (아이디, 패스워드, 로그인)
+		// 1. 아이디
+		//idPanel = new JPanel();
+		//downPanel.add(idPanel,"North");
+
+		idIcon = new ImageIcon("ID.png");
+		laId = new JLabel(idIcon);
+		//laId.setText("아이디");
+		//laId.setFont(new Font("돋움", 1, 14));
+		//laId.setForeground(new Color(-13421773));
+		//laId.setBackground(new Color(-1118482));
+		laId.setBounds(100, 36, 80, 30);
+		downPanel.add(laId);
+
+		id = new JTextField();
+		id.setFont(new Font("굴림", 0, 14));
+		id.setForeground(new Color(-13421773));
+		id.setBackground(new Color(-1));
+		id.setBounds(194, 36, 124, 30);
+		downPanel.add(id);
+
+		
+		// 2. 패스워드
+		//pwPanel = new JPanel();
+		//downPanel.add(pwPanel);
+		
+		pwIcon = new ImageIcon("PW.png");
+		laPw = new JLabel(pwIcon);
+		//laPw.setText("패스워드 ");
+		//laPw.setFont(new Font("돋움", 1, 14));
+		//laPw.setForeground(new Color(-13421773));
+		//laPw.setBackground(new Color(-1118482));
+		laPw.setBounds(100, 80, 80, 30);
+		downPanel.add(laPw);
+
+		pw = new JPasswordField();
+		pw.setFont(new Font("굴림", 0, 14));
+		pw.setForeground(new Color(-13421773));
+		pw.setBackground(new Color(-1));
+		pw.setBounds(194, 80, 124, 30);
+		downPanel.add(pw);
+		pw.addActionListener(new ActionListener() {
+			 public void actionPerformed(ActionEvent e) {
+				loginCheck();
+            }
+        });
+
+		// 3. 로그인 버튼
+		//loginPanel = new JPanel();
+		//downPanel.add(loginPanel);
+		loginIcon = new ImageIcon("Login.png");
+		loginB = new JButton(loginIcon);
+		//loginB.setText("로그인");
+		//loginB.setFont(new Font("돋움", 1, 14));
+		//loginB.setForeground(new Color(-13421773));
+		//loginB.setBackground(new Color(-3355444));
+		loginB.setBounds(173, 135, 80, 30);
+		downPanel.add(loginB);
+		loginB.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+				loginCheck();
+            }
+        });
 		// -----------------------   종료 옵션 창 ------------------------------------------
 		f.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e){
