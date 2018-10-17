@@ -45,7 +45,7 @@ public class TChat extends JFrame implements Runnable{
 	DatagramPacket datagramPacket2 = null;
 	byte[] buffer = new byte[512];
 	MulticastSocket multicastSocket = null;
-	//static int first = 1; //static으로 만들면..........상대방한테는안뜨나..????
+	int first = 1; //static으로 만들면..........상대방한테는안뜨나..????
 	static final long serialVersionUID = 1L;//////////////////
 	
 
@@ -77,7 +77,12 @@ public class TChat extends JFrame implements Runnable{
 	void init(){
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 74, 3));
 		pNorth = new JPanel(); pCenter = new JPanel(); pSouth = new JPanel();
-		getContentPane().add(pNorth); getContentPane().add(pCenter); getContentPane().add(pSouth);
+		pNorth.setLayout(new FlowLayout());
+		pCenter.setLayout(new FlowLayout());
+		pSouth.setLayout(new FlowLayout());
+		getContentPane().add(pNorth, BorderLayout.NORTH);
+		getContentPane().add(pCenter, BorderLayout.CENTER);
+		getContentPane().add(pSouth, BorderLayout.SOUTH);
 		chatPanel = new JPanel(); /////
 		loadImageIcon();
 		
@@ -246,11 +251,14 @@ public class TChat extends JFrame implements Runnable{
 				//datagramSocket.receive(datagramPacket2);
 				multicastSocket.receive(datagramPacket);
 	// 6. 수신된 메시지 출력
-				/*if (first ==1)	{
-					new AskYes();
-				}*/
+				
 				String msg = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
 				if (msg.startsWith(myId)){
+					first++;
+				}else if (first ==1){
+					new AskYes();
+					append(msg);
+					first++;
 				}else if(msg.equals(report)){
 					try{
 						//ta.append("[ 비속어, 스팸 등의 이유로 신고 처리되었습니다.\n 5회 누적시 계정이 정지됩니다.\n 3초 후 대화가 종료됩니다.]");
