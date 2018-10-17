@@ -7,7 +7,7 @@ Chat.java대화하는 자바파일, report4.png, back3.png 아이콘파일\
 GUI.java고르는(Load.java프로필 차례로 업로드하는)\
 Login.java로그인하는\
 m1_like.txt 이런식으로 사람들이 할 때마다 파일 만들어져야함.\
-★★★로그인창 말고 다른 고르기+It's a Match+대화창 크기는 모두 400*540★★★\
+★★★로그인창 말고 다른 고르기+It's a Match+대화창 크기는 모두 400*540, 위치는 500,100★★★\
 \
 
 
