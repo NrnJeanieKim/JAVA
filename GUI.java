@@ -137,8 +137,8 @@ class GUI extends JFrame{
     cp.requestFocus();
 	  cp.addKeyListener(new MyKeyListener());
     setTitle("Tinder");
-    setSize(800,500);
-    setLocation(400,400);
+    setSize(400,540);
+    setLocation(500,100);
     setVisible(true);
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
@@ -166,27 +166,29 @@ class GUI extends JFrame{
      			switch(key){
      				case KeyEvent.VK_LEFT: //싫어요
      				try{
-     					writer.write(DISLIKE);
+     					writer.write(DISLIKE+"*");
      					writer.flush();
      				}catch(IOException ie){} break;
      				case KeyEvent.VK_RIGHT: //좋아요
      				try{
-              writer.write(LIKE);
+              writer.write(LIKE+"*");
      					writer.flush();
      					String line = "";//인덱스 키워가며 접근해야함★★★★★★★★★★★★★★★★★★★★★★★★★★
      					if (yourFile.exists()){
                 System.out.println(myIdx+"myIdx");
      					   if((line = br.readLine())!=null){
      							 yourAnswer = line;
-                   System.out.println(yourAnswer);
-                     if (yourAnswer.charAt(Integer.parseInt(myIdx))=='1'){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
+                  String[] elements = yourAnswer.split("\\*");
+
+
+                     if (elements[Integer.parseInt(myIdx)].equals("1")){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
          					  		ask = true;
          						  	askChat();
          						 }
                    }
      						}System.out.println("passed if ");
      				   }catch(IOException ie){}
-                 catch(StringIndexOutOfBoundsException se){break;}
+                 catch(ArrayIndexOutOfBoundsException se){break;}
             break;
      			}
           if(!ask)change(counter,myName);
@@ -216,6 +218,7 @@ class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 �
 	  }
    public void actionPerformed(ActionEvent ae){
       this.setVisible(false);
+      gui.setVisible(false);
        new TChat();
    }
 
