@@ -80,6 +80,7 @@ class GUI extends JFrame{
     }
   }
   String fName;
+
   GUI(String name){
     myName = name;
     fName = name;
@@ -141,6 +142,7 @@ class GUI extends JFrame{
     setVisible(true);
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
+
   //내부클래스 KeyListener!!!!!!!
 	 class MyKeyListener extends KeyAdapter{
      	  public void keyPressed(KeyEvent e){
@@ -189,7 +191,7 @@ class GUI extends JFrame{
      			}
           if(!ask)change(counter,myName);
           ask = false;
-     			yourIdx+=1; //상대방 인덱스 하나 늘리기.
+
      		}
       }
 
@@ -201,27 +203,22 @@ class GUI extends JFrame{
 	  }
 }
 
-class AskChat extends JFrame implements ActionListener, Runnable{ //팝업창 띄우기 위한 클래스. Choose외부.
+class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 위한 클래스. Choose외부.
 	 GUI gui; //띄우고 나서 cs.ask = false로 만들어줘야 함.
 	 JPanel upPanel, middlePanel, downPanel; //매치, 하트, 대화/계속고르기 부착되는 JPanel
 	 JLabel match, heart; //"It's Match!", 하트그림
 	 JButton sendButton, keepButton; //"send a message", "Keep Playing"
 	 Container cp;
+   int count;
 	 AskChat(GUI gui){
 		 this.gui = gui;
 		 init();
 	  }
    public void actionPerformed(ActionEvent ae){
       this.setVisible(false);
-     // Thread t = new Thread(this);
-     //t.start();
-     new TChat();
-
+       new TChat();
    }
-   public void run(){
 
-     new TClient();
-   }
 	 void init(){
 		cp = getContentPane();
 		upPanel = new JPanel(); middlePanel = new JPanel(); downPanel = new JPanel();
