@@ -23,7 +23,7 @@ public class TChat extends JFrame implements Runnable{
 	JLabel Id;
     JTextField tf;
 	JButton bBack, cSend, bReport; //뒤로 가기, 메시지 보내기, 신고 버튼
-	ImageIcon ii1, ii2;
+	ImageIcon ii1, ii2, ii3;
 	String ip = "127.0.0.1";
 	int port = 5000;
 	Socket s;
@@ -78,6 +78,9 @@ public class TChat extends JFrame implements Runnable{
 		
 		bBack = new JButton(ii1);
 		getContentPane().add(bBack);
+		bBack.setBorderPainted(false);
+		bBack.setFocusPainted(false);
+		bBack.setContentAreaFilled(false);
 		
 		//대화하는 상대방 아이디가 뜨게 해야 함! (구현 안 됨)
 		Id = new JLabel("Chat ID");
@@ -85,6 +88,9 @@ public class TChat extends JFrame implements Runnable{
 		
 		bReport = new JButton(ii2);
 		getContentPane().add(bReport);
+		bReport.setBorderPainted(false);
+		bReport.setFocusPainted(false);
+		bReport.setContentAreaFilled(false);
 		
 		ta = new JTextArea(22, 34);
 		getContentPane().add(ta);
@@ -105,8 +111,11 @@ public class TChat extends JFrame implements Runnable{
 		getContentPane().setVisible(true);
 		tf.setEnabled(true);
 		
-		cSend = new JButton("Send");
+		cSend = new JButton(ii3);
 		getContentPane().add(cSend);
+		cSend.setBorderPainted(false);
+		cSend.setFocusPainted(false);
+		cSend.setContentAreaFilled(false);
 
 		setUI();
 	}
@@ -123,9 +132,10 @@ public class TChat extends JFrame implements Runnable{
 		setTitle("Tinder? Tinder!");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		setSize(400, 540);
+		setSize(400, 560);
 		setLocation(500, 100);
 		setVisible(true);
+		getContentPane().setBackground(Color.white);
 	}
 	void loadImageIcon(){
 		try{
@@ -133,6 +143,8 @@ public class TChat extends JFrame implements Runnable{
 			ii1 = new ImageIcon(bi);
 			BufferedImage bi2 = ImageIO.read(new File("imgs/report4.png"));
 			ii2 = new ImageIcon(bi2);
+			BufferedImage bi3 = ImageIO.read(new File("imgs/send4.png"));
+			ii3 = new ImageIcon(bi3);
 		}catch(IOException ie){
 		}
 	}
@@ -158,7 +170,7 @@ public class TChat extends JFrame implements Runnable{
 					try{
 						ta.append("[ 비속어, 스팸 등의 이유로 신고 처리되었습니다.\n 5회 누적시 계정이 정지됩니다.\n 3초 후 대화가 종료됩니다.]");
 						Thread.sleep(3000);
-						System.exit(0);
+						this.dispose();
 					}catch(InterruptedException ie2){}
 				}else{
 					ta.append(msg+"\n");
@@ -194,7 +206,7 @@ public class TChat extends JFrame implements Runnable{
 						datagramSocket.send(datagramPacket);
 					}catch(IOException ie){System.out.println("send 오류");}
 				}
-			}else if (obj == tf){
+			}else if(obj == tf){
 				line = tf.getText().trim();
 				tf.setText("");
 				if(line.length() != 0 && !(line.equals(""))){
@@ -206,8 +218,7 @@ public class TChat extends JFrame implements Runnable{
 						datagramSocket.send(datagramPacket);
 					}catch(IOException ie){System.out.println("send 오류");}
 				}
-			}
-			else if(obj == bReport){
+			}else if(obj == bReport){
 				int answer = JOptionPane.showConfirmDialog(null, "신고하시겠습니까?\n(신고시 대화 내용이 리포트되며, 대화가 종료됩니다.)",
 					"신고하기", JOptionPane.OK_CANCEL_OPTION);
 				if(answer == JOptionPane.YES_OPTION){
