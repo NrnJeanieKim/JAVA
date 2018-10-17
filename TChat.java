@@ -158,7 +158,7 @@ public class TChat extends JFrame implements Runnable{
 					try{
 						ta.append("[ 비속어, 스팸 등의 이유로 신고 처리되었습니다.\n 5회 누적시 계정이 정지됩니다.\n 3초 후 대화가 종료됩니다.]");
 						Thread.sleep(3000);
-						this.dispose();
+						System.exit(0);
 					}catch(InterruptedException ie2){}
 				}else{
 					ta.append(msg+"\n");
@@ -194,7 +194,20 @@ public class TChat extends JFrame implements Runnable{
 						datagramSocket.send(datagramPacket);
 					}catch(IOException ie){System.out.println("send 오류");}
 				}
-			}else if(obj == bReport){
+			}else if (obj == tf){
+				line = tf.getText().trim();
+				tf.setText("");
+				if(line.length() != 0 && !(line.equals(""))){
+					try{
+						ta.append(myId+" : "+line+"\n"); //chat ID 앞에 채팅 뜨지 않게
+						line = myId+" : "+line;
+						buffer = line.getBytes();
+						datagramPacket = new DatagramPacket(buffer, buffer.length, inetAddress, port);
+						datagramSocket.send(datagramPacket);
+					}catch(IOException ie){System.out.println("send 오류");}
+				}
+			}
+			else if(obj == bReport){
 				int answer = JOptionPane.showConfirmDialog(null, "신고하시겠습니까?\n(신고시 대화 내용이 리포트되며, 대화가 종료됩니다.)",
 					"신고하기", JOptionPane.OK_CANCEL_OPTION);
 				if(answer == JOptionPane.YES_OPTION){
