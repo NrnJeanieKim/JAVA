@@ -14,7 +14,7 @@ class GUI extends JFrame{
   String topBanner = tinder+"TopBanner.jpg";
   String rightImage = tinder+"RightKey.jpg";
   String leftImage = tinder+"LeftKey.jpg";
-  int counter = 1;
+  int counter =1;
   ImageIcon img;
   JLabel proLb;
 
@@ -58,9 +58,6 @@ class GUI extends JFrame{
           change();
       }
     }*/
-
-
-
   void change(int counter,String gender){///////프로필 사진 및 내용 전환
     try{
       if(gender.equals("female")){
@@ -151,7 +148,7 @@ class GUI extends JFrame{
      			try{
             counter++;
               System.out.println(myName);
-              change(counter,myName);
+
      				String ptName = myName+myIdx;
      				yourFile = new File(l.index+"_like.txt");
      				fr = new FileReader(yourFile);
@@ -172,34 +169,39 @@ class GUI extends JFrame{
      				}catch(IOException ie){} break;
      				case KeyEvent.VK_RIGHT: //좋아요
      				try{
+              writer.write(LIKE);
+     					writer.flush();
      					String line = "";//인덱스 키워가며 접근해야함★★★★★★★★★★★★★★★★★★★★★★★★★★
      					if (yourFile.exists()){
-
-     						while((line = br.readLine())!=null){
-     							yourAnswer = line;
-     						}
-     						if (yourAnswer.charAt(Integer.parseInt(myIdx))=='1'){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
-     							ask = true;
-     							askChat();
-     						}
-     					}
-     					writer.write(LIKE);
-     					writer.flush();
-     				}catch(IOException ie){} break;
+                System.out.println(myIdx+"myIdx");
+     					   if((line = br.readLine())!=null){
+     							 yourAnswer = line;
+                   System.out.println(yourAnswer);
+                     if (yourAnswer.charAt(Integer.parseInt(myIdx))=='1'){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
+         					  		ask = true;
+         						  	askChat();
+         						 }
+                   }
+     						}System.out.println("passed if ");
+     				   }catch(IOException ie){}
+                 catch(StringIndexOutOfBoundsException se){break;}
+            break;
      			}
+          if(!ask)change(counter,myName);
+          ask = false;
      			yourIdx+=1; //상대방 인덱스 하나 늘리기.
      		}
-       }
+      }
 
 	  void askChat(){
 		  if (ask){ //대화묻는팝업창띄우기.
+      // this.setVisible(false);
 			new AskChat(this);
 		  }
 	  }
 }
 
-
-class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 위한 클래스. Choose외부.
+class AskChat extends JFrame implements ActionListener, Runnable{ //팝업창 띄우기 위한 클래스. Choose외부.
 	 GUI gui; //띄우고 나서 cs.ask = false로 만들어줘야 함.
 	 JPanel upPanel, middlePanel, downPanel; //매치, 하트, 대화/계속고르기 부착되는 JPanel
 	 JLabel match, heart; //"It's Match!", 하트그림
@@ -211,8 +213,14 @@ class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 �
 	  }
    public void actionPerformed(ActionEvent ae){
       this.setVisible(false);
-     new TClient();
+     // Thread t = new Thread(this);
+     //t.start();
+     new TChat();
 
+   }
+   public void run(){
+
+     new TClient();
    }
 	 void init(){
 		cp = getContentPane();
