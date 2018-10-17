@@ -22,7 +22,7 @@ public class TChat extends JFrame implements Runnable{
 	JScrollPane sp;
 	JLabel Id;
     JTextField tf;
-	JButton bBack, cSend, bReport; //µÚ·Î °¡±â, ¸Ş½ÃÁö º¸³»±â, ½Å°í ¹öÆ°
+	JButton bBack, cSend, bReport; //ë’¤ë¡œ ê°€ê¸°, ë©”ì‹œì§€ ë³´ë‚´ê¸°, ì‹ ê³  ë²„íŠ¼
 	ImageIcon ii1, ii2;
 	String ip = "127.0.0.1";
 	int port = 5000;
@@ -32,9 +32,9 @@ public class TChat extends JFrame implements Runnable{
 	InputStream is;
     DataInputStream dis;
 	String line;
-	String report = "[ ºñ¼Ó¾î, ½ºÆÔ µîÀÇ ÀÌÀ¯·Î ½Å°í Ã³¸®µÇ¾ú½À´Ï´Ù.\n 5È¸ ´©Àû½Ã °èÁ¤ÀÌ Á¤ÁöµË´Ï´Ù.\n 3ÃÊ ÈÄ ´ëÈ­°¡ Á¾·áµË´Ï´Ù.]";
-	String myId = "³»¾ÆÀÌµğ";
-	String yourId = "³ÊÀÇ¾ÆÀÌµğ";
+	String report = "[ ë¹„ì†ì–´, ìŠ¤íŒ¸ ë“±ì˜ ì´ìœ ë¡œ ì‹ ê³  ì²˜ë¦¬ë˜ì—ˆìŠµë‹ˆë‹¤.\n 5íšŒ ëˆ„ì ì‹œ ê³„ì •ì´ ì •ì§€ë©ë‹ˆë‹¤.\n 3ì´ˆ í›„ ëŒ€í™”ê°€ ì¢…ë£Œë©ë‹ˆë‹¤.]";
+	String myId = "ë‚´ì•„ì´ë””";
+	String yourId = "ë„ˆì˜ì•„ì´ë””";
 	//////////////////
 	InetAddress inetAddress;
 	DatagramSocket datagramSocket = null;
@@ -42,12 +42,12 @@ public class TChat extends JFrame implements Runnable{
 	DatagramPacket datagramPacket2 = null;
 	byte[] buffer = new byte[512];
 	MulticastSocket multicastSocket = null;
-	static int first = 1; //staticÀ¸·Î ¸¸µé¸é..........»ó´ë¹æÇÑÅ×´Â¾È¶ß³ª..????
+	//static int first = 1; //staticìœ¼ë¡œ ë§Œë“¤ë©´..........ìƒëŒ€ë°©í•œí…ŒëŠ”ì•ˆëœ¨ë‚˜..????
 
 	TChat(){
-		//Login in = new Login();
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("ID¸¦ ÀÔ·ÂÇÏ¼¼¿ä : ");
+		System.out.println("IDë¥¼ ì…ë ¥í•˜ì„¸ìš” : ");
 		try{
 			myId = br.readLine();
 		}catch(IOException ie){}
@@ -55,29 +55,18 @@ public class TChat extends JFrame implements Runnable{
 		inetAddress = null;	
 		
 		  try{
-			  inetAddress = InetAddress.getByName("224.1.1.0"); // 224.0.0.0 to 239.255.255.255 ¹üÀ§ »ç¿ëÇØ¾ß ¸ÖÆ¼¼ÒÄÏ µÊ...
+			  inetAddress = InetAddress.getByName("224.1.1.0"); // 224.0.0.0 to 239.255.255.255 ë²”ìœ„ ì‚¬ìš©í•´ì•¼ ë©€í‹°ì†Œì¼“ ë¨...
 		  }catch(UnknownHostException ue){
-			  System.out.println("¿Ã¹Ù¸£Áö ¾ÊÀº ¾ÆÀÌÇÇ");}
+			  System.out.println("ì˜¬ë°”ë¥´ì§€ ì•Šì€ ì•„ì´í”¼");}
 		 
-		 // UDPMultiReceive udpMultiReceive = null;
-		 // UDPMultiSend udpMultiSend = null;
+
 		 try {
-			 //Socket ¿­±â
+			 //Socket ì—´ê¸°
 				datagramSocket = new DatagramSocket(); 
-		   System.out.println("*********** " + myId + "´Ô Á¢¼Ó ***********");
-		   // 3. µ¥ÀÌÅÍ ¹Ş±â
-		   //udpMultiReceive = new UDPMultiReceive(inetAddress, portNumber);
-		  // udpMultiReceive.start();
-		   // 4. µ¥ÀÌÅÍ º¸³»±â
-		 //  udpMultiSend = new UDPMultiSend(inetAddress, portNumber, strId);
-		//   udpMultiSend.start();
-			
-			//System.out.println("name : "+in.name+", loginid : "+in.loginid+", loginpassword : "+in.loginpass);
-			 ////////////new GUI();
-		 // } catch (UnknownHostException e) {
-	  // e.printStackTrace();
-	  } catch (IOException e) {
-	   e.printStackTrace();
+		   System.out.println("*********** " + myId + "ë‹˜ ì ‘ì† ***********");
+
+	   } catch (IOException e) {
+		e.printStackTrace();
 	  }
 	  Thread th = new Thread(this);
 	  th.start();
@@ -90,7 +79,7 @@ public class TChat extends JFrame implements Runnable{
 		bBack = new JButton(ii1);
 		getContentPane().add(bBack);
 		
-		//´ëÈ­ÇÏ´Â »ó´ë¹æ ¾ÆÀÌµğ°¡ ¶ß°Ô ÇØ¾ß ÇÔ! (±¸Çö ¾È µÊ)
+		//ëŒ€í™”í•˜ëŠ” ìƒëŒ€ë°© ì•„ì´ë””ê°€ ëœ¨ê²Œ í•´ì•¼ í•¨! (êµ¬í˜„ ì•ˆ ë¨)
 		Id = new JLabel("Chat ID");
 		getContentPane().add(Id);
 		
@@ -151,24 +140,23 @@ public class TChat extends JFrame implements Runnable{
 	public void run(){
 		byte[] buffer2 = new byte[512];
 		try{
-			//datagramSocket = new DatagramSocket(port); ÀÌ°É·Î¾ÈµÊ.
-			multicastSocket = new MulticastSocket(port);// 2. DatagramPacketÀ» ¹Ş±â À§ÇÑ Socket »ı¼º
-			multicastSocket.joinGroup(inetAddress);// 3. ±×·ì µî·Ï - Åë½Å °¡´ÉÇÏ°Ô ÇÔ
-			while(true) {	// ¸Ş½ÃÁö °è¼Ó ¹ŞÀ½
-	// 4. Data¸¦ ¹ŞÀ» Packet »ı¼º
+			multicastSocket = new MulticastSocket(port);// 2. DatagramPacketì„ ë°›ê¸° ìœ„í•œ Socket ìƒì„±
+			multicastSocket.joinGroup(inetAddress);// 3. ê·¸ë£¹ ë“±ë¡ - í†µì‹  ê°€ëŠ¥í•˜ê²Œ í•¨
+			while(true) {	// ë©”ì‹œì§€ ê³„ì† ë°›ìŒ
+	// 4. Dataë¥¼ ë°›ì„ Packet ìƒì„±
 				datagramPacket = new DatagramPacket(buffer2, buffer2.length);
-	// 5. ¸ÖÆ¼Ä³½ºÆ®¿¡ Á¸ÀçÇÏ´Â ¸Ş½ÃÁö ¹ŞÀ½
+	// 5. ë©€í‹°ìºìŠ¤íŠ¸ì— ì¡´ì¬í•˜ëŠ” ë©”ì‹œì§€ ë°›ìŒ
 				//datagramSocket.receive(datagramPacket2);
 				multicastSocket.receive(datagramPacket);
-	// 6. ¼ö½ÅµÈ ¸Ş½ÃÁö Ãâ·Â
-				if (first ==1)	{
+	// 6. ìˆ˜ì‹ ëœ ë©”ì‹œì§€ ì¶œë ¥
+				/*if (first ==1)	{
 					new AskYes();
-				}
+				}*/
 				String msg = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
 				if (msg.startsWith(myId)){
 				}else{
 					ta.append(msg+"\n");
-					first++;
+					//first++;
 				}
 			}
 		}catch (IOException e) {
@@ -183,7 +171,7 @@ public class TChat extends JFrame implements Runnable{
 		 new TChat();
 	 }
 
-	 class ChatHandler implements ActionListener { ///³»ºÎÅ¬·¡½º·Î ¸®½º³Ê ±¸Çö
+	 class ChatHandler implements ActionListener { ///ë‚´ë¶€í´ë˜ìŠ¤ë¡œ ë¦¬ìŠ¤ë„ˆ êµ¬í˜„
 		 public void actionPerformed(ActionEvent e){
 			Object obj = e.getSource();
 			if(obj == bBack){
@@ -193,23 +181,22 @@ public class TChat extends JFrame implements Runnable{
 				tf.setText("");
 				if(line.length() != 0 && !(line.equals(""))){
 					try{
-						ta.append(myId+" : "+line+"\n"); //chat ID ¾Õ¿¡ Ã¤ÆÃ ¶ßÁö ¾Ê°Ô
+						ta.append(myId+" : "+line+"\n"); //chat ID ì•ì— ì±„íŒ… ëœ¨ì§€ ì•Šê²Œ
+						line = myId+" : "+line;
 						buffer = line.getBytes();
 						datagramPacket = new DatagramPacket(buffer, buffer.length, inetAddress, port);
 						datagramSocket.send(datagramPacket);
-						//dos.writeUTF(c.line);
-						//dos.flush();
-					}catch(IOException ie){System.out.println("send ¿À·ù");}
+					}catch(IOException ie){System.out.println("send ì˜¤ë¥˜");}
 				}
 			}else if(obj == bReport){
-				int answer = JOptionPane.showConfirmDialog(null, "½Å°íÇÏ½Ã°Ú½À´Ï±î?\n(½Å°í½Ã ´ëÈ­ ³»¿ëÀÌ ¸®Æ÷Æ®µÇ¸ç, ´ëÈ­°¡ Á¾·áµË´Ï´Ù.)",
-					"½Å°íÇÏ±â", JOptionPane.OK_CANCEL_OPTION);
+				int answer = JOptionPane.showConfirmDialog(null, "ì‹ ê³ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?\n(ì‹ ê³ ì‹œ ëŒ€í™” ë‚´ìš©ì´ ë¦¬í¬íŠ¸ë˜ë©°, ëŒ€í™”ê°€ ì¢…ë£Œë©ë‹ˆë‹¤.)",
+					"ì‹ ê³ í•˜ê¸°", JOptionPane.OK_CANCEL_OPTION);
 				if(answer == JOptionPane.YES_OPTION){
-					JOptionPane.showMessageDialog(null, "½Å°í°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù. ´ëÈ­¸¦ Á¾·áÇÕ´Ï´Ù.", "½Å°í¿Ï·á",
+					JOptionPane.showMessageDialog(null, "ì‹ ê³ ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤. ëŒ€í™”ë¥¼ ì¢…ë£Œí•©ë‹ˆë‹¤.", "ì‹ ê³ ì™„ë£Œ",
 						JOptionPane.INFORMATION_MESSAGE);
-					//»ó´ë¹æ ´ëÈ­Ã¢µµ Á¾·á
+					//ìƒëŒ€ë°© ëŒ€í™”ì°½ë„ ì¢…ë£Œ
 					try{
-						dos.writeUTF("[ ºñ¼Ó¾î, ½ºÆÔ µîÀÇ ÀÌÀ¯·Î ½Å°í Ã³¸®µÇ¾ú½À´Ï´Ù.\n 5È¸ ´©Àû½Ã °èÁ¤ÀÌ Á¤ÁöµË´Ï´Ù.\n 3ÃÊ ÈÄ ´ëÈ­°¡ Á¾·áµË´Ï´Ù.]");
+						dos.writeUTF("[ ë¹„ì†ì–´, ìŠ¤íŒ¸ ë“±ì˜ ì´ìœ ë¡œ ì‹ ê³  ì²˜ë¦¬ë˜ì—ˆìŠµë‹ˆë‹¤.\n 5íšŒ ëˆ„ì ì‹œ ê³„ì •ì´ ì •ì§€ë©ë‹ˆë‹¤.\n 3ì´ˆ í›„ ëŒ€í™”ê°€ ì¢…ë£Œë©ë‹ˆë‹¤.]");
 					}catch(IOException ie){
 					}finally{
 						 System.exit(0);
@@ -220,4 +207,4 @@ public class TChat extends JFrame implements Runnable{
 		 
 	 }
 }
-////¾îµğ¼±°¡ datagramSocket.close();ÇØÁà¾ßÇÔ.´Ùº¸³»°í³ª¼­´İ¾Æ¾ßÇÔ...
+////ì–´ë””ì„ ê°€ datagramSocket.close();í•´ì¤˜ì•¼í•¨.ë‹¤ë³´ë‚´ê³ ë‚˜ì„œë‹«ì•„ì•¼í•¨...
