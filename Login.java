@@ -31,7 +31,7 @@ public class Login
 		f.setTitle("Tinder Login");
 		f.setSize(450,350);
 		f.setResizable(false);
-		f.setLocation(500,300);
+		f.setLocation(500,100);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//mainPanel = new JPanel();
