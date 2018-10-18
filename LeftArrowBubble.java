@@ -19,17 +19,17 @@ public class LeftArrowBubble extends JPanel {
    protected void paintComponent(final Graphics g) {
       final Graphics2D g2d = (Graphics2D) g;
       g2d.setColor(new Color(0.5f, 0.8f, 1f));
-      int x = padding + strokeThickness + arrowSize;
-      int width = 300 - arrowSize - (strokeThickness * 2);
+      int x = padding+30 + strokeThickness + arrowSize; //30더해주니까 더 오른쪽으로 갔음
+      int width = 230 - arrowSize - (strokeThickness * 2);
       int bottomLineY = 50 - strokeThickness;
       g2d.fillRect(x, padding, width, bottomLineY);
       g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING,   RenderingHints.VALUE_ANTIALIAS_ON));
       g2d.setStroke(new BasicStroke(strokeThickness));
       RoundRectangle2D.Double rect = new RoundRectangle2D.Double(x, padding, width, bottomLineY, radius, radius);
       Polygon arrow = new Polygon();
-      arrow.addPoint(20, 8);
-      arrow.addPoint(0, 10);
-      arrow.addPoint(20, 12);
+      arrow.addPoint(50, 8); //x축에 30씩 더해줌->오른쪽으로 감
+      arrow.addPoint(30, 10);
+      arrow.addPoint(50, 12);
       Area area = new Area(rect);
       area.add(new Area(arrow));
       g2d.draw(area);
