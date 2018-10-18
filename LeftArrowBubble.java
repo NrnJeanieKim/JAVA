@@ -10,17 +10,18 @@ import javax.swing.JPanel;
 
 public class LeftArrowBubble extends JPanel {
    private static final long serialVersionUID = -5389178141802153305L;
-   private int radius = 10;
-   private int arrowSize = 12;
-   private int strokeThickness = 3;
+   private int radius = 10; //반지름
+   private int arrowSize = 12; //말풍선화살표
+   private int strokeThickness = 3; //
    private int padding = strokeThickness / 2;
+   
    @Override
    protected void paintComponent(final Graphics g) {
       final Graphics2D g2d = (Graphics2D) g;
       g2d.setColor(new Color(0.5f, 0.8f, 1f));
       int x = padding + strokeThickness + arrowSize;
-      int width = getWidth() - arrowSize - (strokeThickness * 2);
-      int bottomLineY = getHeight() - strokeThickness;
+      int width = 300 - arrowSize - (strokeThickness * 2);
+      int bottomLineY = 50 - strokeThickness;
       g2d.fillRect(x, padding, width, bottomLineY);
       g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING,   RenderingHints.VALUE_ANTIALIAS_ON));
       g2d.setStroke(new BasicStroke(strokeThickness));
