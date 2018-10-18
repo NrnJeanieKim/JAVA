@@ -8,6 +8,7 @@ GUI.java고르는(Load.java프로필 차례로 업로드하는)\
 Login.java로그인하는 (타이틀:frameIcon.png) (GUI: mainIcon.png, idIcon.png, pwIcon.png, loginIcon.png )\
 m1_like.txt 이런식으로 사람들이 할 때마다 파일 만들어져야함.\
 ★★★로그인창 말고 다른 고르기+It's a Match+대화창 크기는 모두 400*540, 위치는 500,100★★★\
+프로필사진.zip  프로필 사이즈 (234*312)\
 \
 
 
