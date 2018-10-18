@@ -113,7 +113,7 @@ public class TChat extends JFrame implements Runnable{
 		//sp.setViewportView(chatPanel);
 		sp.setPreferredSize(new Dimension(390, 350));
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
 			public void adjustmentValueChanged(AdjustmentEvent e) {  
 				e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
@@ -193,7 +193,7 @@ public class TChat extends JFrame implements Runnable{
 		}
 		System.out.println(textWithSeparators);
 
-		tac.setText("<html><body style='width:" + (size - 195) + "px;padding:15px;display:block;'>"
+		tac.setText("<html><body style='width:" + (size - 242) + "px;padding:15px;display:block;'>" //150일때 너무 왼쪽. 50이면 더왼쪽. 242가 오른쪽이랑 비슷.
 						+ textWithSeparators + "</body></html>");
 
 		tac.setOpaque(false);
