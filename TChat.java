@@ -95,7 +95,7 @@ public class TChat extends JFrame implements Runnable{
 		
 		bReport = new JButton(ii2);
 		pNorth.add(bReport);
-		
+		chatPanel.setPreferredSize(new Dimension(400, 350)); ////////////말풍선을 못줄여서 차라리 창크기를 늘렸음.............
 		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.PAGE_AXIS));
 		chatPanel.add(Box.createVerticalGlue());
 		//ta = new JTextArea(22, 34);
@@ -141,7 +141,7 @@ public class TChat extends JFrame implements Runnable{
 		setTitle("Tinder? Tinder!");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		setSize(400, 540);
+		setSize(500, 540);
 		setLocation(500, 100);
 		setVisible(true);
 	}
