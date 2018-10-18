@@ -54,10 +54,10 @@ public class TChat extends JFrame implements Runnable{
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("ID를 입력하세요 : ");
-		try{
-			myId = br.readLine();
-		}catch(IOException ie){}
-		init();
+		// try{
+		// 	myId = br.readLine();
+		// }catch(IOException ie){}
+		// init();
 		inetAddress = null;	
 		  try{
 			  inetAddress = InetAddress.getByName("224.1.1.0"); // 224.0.0.0 to 239.255.255.255 범위 사용해야 멀티소켓 됨...
@@ -261,6 +261,7 @@ public class TChat extends JFrame implements Runnable{
 		try{
 			multicastSocket = new MulticastSocket(port);// 2. DatagramPacket을 받기 위한 Socket 생성
 			multicastSocket.joinGroup(inetAddress);// 3. 그룹 등록 - 통신 가능하게 함
+			int popCount=0;
 			while(true) {	// 메시지 계속 받음
 	// 4. Data를 받을 Packet 생성
 				datagramPacket = new DatagramPacket(buffer2, buffer2.length);
@@ -270,6 +271,19 @@ public class TChat extends JFrame implements Runnable{
 	// 6. 수신된 메시지 출력
 				
 				String msg = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
+				if(msg.startsWith(myId)){
+					popCount++;
+					System.out.println(myId);
+				}if (msg.contains("pop")&&popCount==0){
+					System.out.println("whose");
+					new AskYes(this);
+					popCount++;
+					continue;
+				}if (msg.contains("chat")&&popCount==0){
+					System.out.println("Chat");
+					init();
+					continue;
+				}
 				if (msg.startsWith(myId)){
 					first++;
 				}else if (first ==1){
@@ -350,5 +364,34 @@ public class TChat extends JFrame implements Runnable{
 		 }
 		 
 	 }
+	 void pop(){
+		 try{
+			String pop= myId+": pop";
+		 	buffer = pop.getBytes();
+		 	datagramPacket = new DatagramPacket(buffer, buffer.length, inetAddress, port);
+		 	datagramSocket.send(datagramPacket);
+			//AskYes ay = new AskYes(this);
+			// ay.start();
+		 }catch(IOException ie){
+		 }
+	 }
+	 
+}
+class AskYes extends JFrame implements Runnable{ //상대방이 대화를 시작했을 때, 대화할 거냐고 물어보는 클래스
+ int yesNo;
+ TChat tc ;
+ AskYes(){
+	 new Thread(this).start();
+	 }
+ AskYes(TChat tc){
+	 this.tc = tc;
+	 new Thread(this).start();
+ }
+	public void run(){
+	 yesNo = JOptionPane.showConfirmDialog(this, "좋아요한 상대방의 대화 요청이 있습니다. 확인을 누르시면 대화창으로 이동합니다.", "선택", JOptionPane.OK_CANCEL_OPTION);
+	 if(yesNo==0){
+		 tc.init();
+	 }
+ }
 }
 ////어디선가 datagramSocket.close();해줘야함.다보내고나서닫아야함...
