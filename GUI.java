@@ -6,14 +6,13 @@ import java.io.*;
 import java.util.ArrayList;
 class GUI extends JFrame{
   String tinder ="";
-  JFrame jr;
   JPanel jp1,jp2,jp3,lower,upper;
   JButton leftBt,rightBt;
   JLabel logoLb, photoLb;
   Load l;
   String topBanner = tinder+"TopBanner.jpg";
-  String rightImage = tinder+"RightKey.jpg";
-  String leftImage = tinder+"LeftKey.jpg";
+  String rightImage = tinder+"Like.jpg";
+  String leftImage = tinder+"disLike.jpg";
   int counter =1;
   ImageIcon img;
   JLabel proLb;
@@ -24,18 +23,15 @@ class GUI extends JFrame{
 	File myFile, yourFile; //내 좋/싫 저장하는 리스트, 상대방 리스트(사진 넘길때마다 새로 돌아감)
 	FileReader fr = null; //상대방 성별 리스트 읽기
 	FileWriter writer = null;
-
 	final String LIKE = "1";
 	final String DISLIKE = "2";
-	String answer = ""; //좋으면 1, 싫으면 2
-	ArrayList<String> answers;
 	String yourName = ""; //로그인한 사람 이름. 여자w1~w10, 남자 m1~m10 내이름정하는법★★★★★★★★★★★★★★★★★★★★
 	String myIdx; //내 인덱스. 1~10번중 하나로 정해져 있음(로그인시 매칭됨)
 	String yourIdx; //내가 지금 좋아요/싫어요를 판단하는 상대의 인덱스. 1에서 시작해서 키보드값 입력 할때마다 1씩 증가.
 	String myName = ""; //내 성별과 반대되는 성별+yourIdx 상대방 이름 정하는 법★★★★★★★★★★★★★★★★★★★
 	String yourAnswer = ""; //상대방의 대답전체
 	boolean ask = false; //좋아요-좋아요면 true가 됨->대화 묻는 팝업 뜸
-
+  TChat tc;
   /*class RightLeft implements ActionListener{
     RightLeft(){
       leftBt.addActionListener(this);
@@ -82,21 +78,19 @@ class GUI extends JFrame{
   String fName;
   GUI(){}
   GUI(String name){
+    tc = new TChat();
     myName = name;
     fName = name;
     myIdx = myName.substring(1);
     if(myName.contains("w"))myName = "female";
     else myName = "male";
 	  myFile = new File(fName+"_like.txt"); //내 좋/싫 저장하는 리스트
-	  answers = new ArrayList<String>();
     try{
-	  writer = new FileWriter(myFile, false);
-
+	     writer = new FileWriter(myFile, false);
       l = new Load();
       l.pick(Integer.parseInt(myIdx),myName);
       leftBt = new JButton(new ImageIcon(ImageIO.read(new File(leftImage))));
       rightBt = new JButton(new ImageIcon(ImageIO.read(new File(rightImage))));
-      //RightLeft rl = new RightLeft();
       logoLb = new JLabel(new ImageIcon(ImageIO.read(new File(topBanner))));
       if(myName.equals("male")){
         l.pick(1,"female");
@@ -115,9 +109,10 @@ class GUI extends JFrame{
     ///////////MIDDLE////////////
     upper = new JPanel(new FlowLayout());
     upper.add(proLb);
-    jp2 = new JPanel(new GridLayout(2,1));
-    jp2.add(photoLb);
-    jp2.add(upper);
+    jp2 = new JPanel();
+    photoLb.setPreferredSize(new Dimension(300,310));;
+    jp2.add(photoLb,BorderLayout.SOUTH);
+    jp2.add(upper,BorderLayout.NORTH);
     ////////////BOTTOM//////////
     jp3 = new JPanel(new FlowLayout());
     jp3.add(leftBt);
@@ -140,17 +135,13 @@ class GUI extends JFrame{
     setSize(400,540);
     setLocation(500,100);
     setVisible(true);
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
-
   //내부클래스 KeyListener!!!!!!!
 	 class MyKeyListener extends KeyAdapter{
      	  public void keyPressed(KeyEvent e){
-
      			try{
             counter++;
-              System.out.println(myName);
-
      				String ptName = myName+myIdx;
      				yourFile = new File(l.index+"_like.txt");
      				fr = new FileReader(yourFile);
@@ -179,36 +170,26 @@ class GUI extends JFrame{
      					   if((line = br.readLine())!=null){
      							 yourAnswer = line;
                   String[] elements = yourAnswer.split("\\*");
-
-
-                     if (elements[Integer.parseInt(myIdx)].equals("1")){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
+                  System.out.println(elements.length);
+                     if (elements[Integer.parseInt(myIdx)-1].equals("1")){ //상대방 파일 열어서 내 인덱스가 like면 대화창 여는 메소드로 넘어감.
          					  		ask = true;
-
-         						  	askChat();
-
+         						  	askChat(tc);
          						 }
                    }
      						}
      				   }catch(IOException ie){}
                  catch(ArrayIndexOutOfBoundsException se){break;}
-
             break;
      			}
-          if(keep)change(counter,myName);
           if(!ask)change(counter,myName);
-          ask = false;
-
      		}
       }
     Boolean keep =false;
-	  void askChat(){
+	  void askChat(TChat tc){
 		  if (ask){ //대화묻는팝업창띄우기.
-      // this.setVisible(false);
-			AskChat ac = new AskChat(this,counter,myName);
-
+			AskChat ac = new AskChat(this,counter,myName,tc);
       if(ac.poped) keep = true;
 		  }
-
 	  }
 
 }
@@ -222,28 +203,28 @@ class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 �
    String myName;
    int counter;
    Boolean poped=false;
-
-	 AskChat(GUI gui,int counter, String myName){
+   TChat tc;
+   AskChat(){}
+	 AskChat(GUI gui,int counter, String myName, TChat tc){
 		 this.gui = gui;
      this.counter = counter;
      this.myName = myName;
+     this.tc = tc;
+
 		 init();
 	  }
-   public void actionPerformed(ActionEvent ae){
+   public void actionPerformed(ActionEvent ae){/////////////////////////sendButton 선택시 상대방에게 팝업 띄워야함.//////////////////////
      Object o = ae.getSource();
      if(o==sendButton){
       this.setVisible(false);
       gui.setVisible(false);
-       new TChat();
+       //new TChat();
+       tc.pop();
+       tc.init();
      }else {
-       System.out.println("keep");
        this.setVisible(false);
-       //new GUI().change(counter,myName);
        poped = true;
-
      }
-
-
    }
 
 	 void init(){
@@ -265,7 +246,6 @@ class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 �
 		setUI();
 	  }
 	 void setUI(){
-		//setTitle("대화하시겠습니까?");타이틀꼭필요한가???
 		setSize(350, 500);
 		setLocation(500,300);
 		setVisible(true);
