@@ -78,16 +78,20 @@ public class TChat extends JFrame implements Runnable{
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 74, 3));
 		pNorth = new JPanel(); pCenter = new JPanel(); pSouth = new JPanel();
 		pNorth.setLayout(new FlowLayout());
+		pNorth.setBackground(Color.white);
 		pCenter.setLayout(new FlowLayout());
+		pCenter.setBackground(Color.white);
 		pSouth.setLayout(new FlowLayout());
-		getContentPane().add(pNorth, BorderLayout.NORTH);
-		getContentPane().add(pCenter, BorderLayout.CENTER);
-		getContentPane().add(pSouth, BorderLayout.SOUTH);
-		chatPanel = new JPanel(); /////
+		pSouth.setBackground(Color.white);
+		chatPanel = new JPanel();
+		chatPanel.setBackground(Color.white);
 		loadImageIcon();
 
 		bBack = new JButton(ii1);
 		pNorth.add(bBack);
+		bBack.setBorderPainted(false);
+		bBack.setFocusPainted(false);
+		bBack.setContentAreaFilled(false);
 
 		//대화하는 상대방 아이디가 뜨게 해야 함! (구현 안 됨)
 		Id = new JLabel("Chat ID");
@@ -95,37 +99,42 @@ public class TChat extends JFrame implements Runnable{
 
 		bReport = new JButton(ii2);
 		pNorth.add(bReport);
-
+		getContentPane().add(pNorth, BorderLayout.NORTH);
+		bReport.setBorderPainted(false);
+		bReport.setFocusPainted(false);
+		bReport.setContentAreaFilled(false);
 		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.PAGE_AXIS));
 		chatPanel.add(Box.createVerticalGlue());
-		//ta = new JTextArea(22, 34);
-		pCenter.add(chatPanel);
-		getContentPane().setVisible(true);
-		//chatPanel.setEdichatPanelble(false);
-		chatPanel.setEnabled(true);
-		//chatPanel.setLineWrap(true);
-		scroll = new JScrollPane();
-		scroll.setViewportView(chatPanel);
-		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		pCenter.add(scroll);
-
-
+		
 		sp = new JScrollPane(chatPanel);
+		//sp.setViewportView(chatPanel);
+		sp.setPreferredSize(new Dimension(390, 350));
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		getContentPane().setVisible(true);
-		getContentPane().add(sp);
+		sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
+			public void adjustmentValueChanged(AdjustmentEvent e) {  
+				e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
+			}
+		});
+		pCenter.add(sp);
+		getContentPane().add(pCenter, BorderLayout.CENTER);
+
+
+		
 
 		tf = new JTextField();
 		tf.setColumns(34);
-		getContentPane().add(tf);
-		getContentPane().setVisible(true);
+		pSouth.add(tf, BorderLayout.CENTER);
 		tf.setEnabled(true);
-		tf.requestFocus();////////
+		tf.requestFocus();
 
-		cSend = new JButton("Send");
-		getContentPane().add(cSend);
+		cSend = new JButton(ii3);
+		pSouth.add(cSend, BorderLayout.SOUTH);
+		getContentPane().add(pSouth, BorderLayout.SOUTH);
+		getContentPane().setVisible(true);
+		cSend.setBorderPainted(false);
+		cSend.setFocusPainted(false);
+		cSend.setContentAreaFilled(false);
 
 		setUI();
 	}
@@ -144,6 +153,7 @@ public class TChat extends JFrame implements Runnable{
 		setSize(400, 540);
 		setLocation(500, 100);
 		setVisible(true);
+		getContentPane().setBackground(Color.white);
 	}
 	void loadImageIcon(){
 		try{
@@ -151,6 +161,8 @@ public class TChat extends JFrame implements Runnable{
 			ii1 = new ImageIcon(bi);
 			BufferedImage bi2 = ImageIO.read(new File("imgs/report4.png"));
 			ii2 = new ImageIcon(bi2);
+			BufferedImage bi3 = ImageIO.read(new File("imgs/send4.png"));
+			ii3 = new ImageIcon(bi3);
 		}catch(IOException ie){
 		}
 	}
@@ -179,8 +191,8 @@ public class TChat extends JFrame implements Runnable{
 											  beginIndex + maximumSize));
 		}
 		System.out.println(textWithSeparators);
-
-		tac.setText("<html><body style='width:" + (size - 150) + "px;padding:15px;display:block;'>"
+//원래 size-150,이었음.//150일때 너무 왼쪽. 50이면 더왼쪽. 242가 오른쪽이랑 비슷.
+		tac.setText("<html><body style='width:" + (size - 265) + "px;padding:15px;display:block;'>"
 						+ textWithSeparators + "</body></html>");
 
 		tac.setOpaque(false);
@@ -221,8 +233,8 @@ public class TChat extends JFrame implements Runnable{
 											  beginIndex + maximumSize));
 		}
 		System.out.println(textWithSeparators);
-
-		tac.setText("<html><body style='width:" + (size - 150) + "px;padding:15px;display:block;'>"
+//원래 size-150이었음
+		tac.setText("<html><body style='width:" + (size - 514) + "px;padding:15px;display:block;'>"
 						+ textWithSeparators + "</body></html>");
 
 		tac.setOpaque(false);
