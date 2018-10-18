@@ -108,20 +108,17 @@ public class TChat extends JFrame implements Runnable{
 		////////chatPanel.setPreferredSize(new Dimension(400, 350)); ////////////말풍선을 못줄여서 차라리 창크기를 늘렸음.............
 		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.PAGE_AXIS));
 		chatPanel.add(Box.createVerticalGlue());
-		//ta = new JTextArea(22, 34);
-		pCenter.add(chatPanel);
-		getContentPane().setVisible(true);
-		//chatPanel.setEdichatPanelble(false);
-		chatPanel.setEnabled(true);
-		//chatPanel.setLineWrap(true);
 	
 		sp = new JScrollPane(chatPanel);
 		//sp.setViewportView(chatPanel);
-		sp.setPreferredSize(new Dimension(400, 350));
+		sp.setPreferredSize(new Dimension(390, 350));
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		//getContentPane().setVisible(true);
-		//getContentPane().add(sp);
+		sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
+			public void adjustmentValueChanged(AdjustmentEvent e) {  
+				e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
+			}
+		});
 		pCenter.add(sp);
 		getContentPane().add(pCenter, BorderLayout.CENTER);
 		//getContentPane().add(pCenter, BorderLayout.CENTER);
