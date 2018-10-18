@@ -191,10 +191,10 @@ class GUI extends JFrame {
 		  }
 	  }
     void focus(){
-       requestFocusInWindow();
+       //requestFocusInWindow();
       //toFront();
        //cp.setFocusable(true);
-      // cp.requestFocus();
+       cp.requestFocus();
     }
 
 
