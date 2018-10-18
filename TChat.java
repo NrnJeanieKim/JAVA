@@ -26,7 +26,7 @@ public class TChat extends JFrame implements Runnable{
 	JLabel Id;
     JTextField tf;
 	JButton bBack, cSend, bReport; //뒤로 가기, 메시지 보내기, 신고 버튼
-	ImageIcon ii1, ii2;
+	ImageIcon ii1, ii2, ii3;
 	String ip = "127.0.0.1";
 	int port = 5000;
 	Socket s;
@@ -88,6 +88,9 @@ public class TChat extends JFrame implements Runnable{
 		
 		bBack = new JButton(ii1);
 		pNorth.add(bBack);
+		bBack.setBorderPainted(false);
+		bBack.setFocusPainted(false);
+		bBack.setContentAreaFilled(false);
 		
 		//대화하는 상대방 아이디가 뜨게 해야 함! (구현 안 됨)
 		Id = new JLabel("Chat ID");
@@ -96,6 +99,9 @@ public class TChat extends JFrame implements Runnable{
 		bReport = new JButton(ii2);
 		pNorth.add(bReport);
 		getContentPane().add(pNorth, BorderLayout.NORTH);
+		bReport.setBorderPainted(false);
+		bReport.setFocusPainted(false);
+		bReport.setContentAreaFilled(false);
 		chatPanel.setPreferredSize(new Dimension(400, 350)); ////////////말풍선을 못줄여서 차라리 창크기를 늘렸음.............
 		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.PAGE_AXIS));
 		chatPanel.add(Box.createVerticalGlue());
@@ -105,8 +111,9 @@ public class TChat extends JFrame implements Runnable{
 		//chatPanel.setEdichatPanelble(false);
 		chatPanel.setEnabled(true);
 		//chatPanel.setLineWrap(true);
+	
 		scroll = new JScrollPane();
-		scroll.setViewportView(chatPanel);
+		//scroll.setViewportView(chatPanel);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		pCenter.add(scroll);
@@ -126,10 +133,14 @@ public class TChat extends JFrame implements Runnable{
 		tf.setEnabled(true);
 		tf.requestFocus();////////
 		
-		cSend = new JButton("Send");
+		cSend = new JButton(ii3);
 		pSouth.add(cSend);
 		getContentPane().add(pSouth, BorderLayout.SOUTH);
 		getContentPane().setVisible(true);
+		cSend.setBorderPainted(false);
+		cSend.setFocusPainted(false);
+		cSend.setContentAreaFilled(false);
+		
 		setUI();
 	}
 	void setUI(){
@@ -144,9 +155,10 @@ public class TChat extends JFrame implements Runnable{
 		setTitle("Tinder? Tinder!");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		setSize(500, 540);
+		setSize(400, 540);
 		setLocation(500, 100);
 		setVisible(true);
+		getContentPane().setBackground(Color.white);
 	}
 	void loadImageIcon(){
 		try{
@@ -154,6 +166,8 @@ public class TChat extends JFrame implements Runnable{
 			ii1 = new ImageIcon(bi);
 			BufferedImage bi2 = ImageIO.read(new File("imgs/report4.png"));
 			ii2 = new ImageIcon(bi2);
+			BufferedImage bi3 = ImageIO.read(new File("imgs/send4.png"));
+			ii3 = new ImageIcon(bi3);
 		}catch(IOException ie){
 		}
 	}
@@ -183,7 +197,7 @@ public class TChat extends JFrame implements Runnable{
 		}
 		System.out.println(textWithSeparators);
 
-		tac.setText("<html><body style='width:" + (size - 150) + "px;padding:15px;display:block;'>"
+		tac.setText("<html><body style='width:" + (size - 195) + "px;padding:15px;display:block;'>"
 						+ textWithSeparators + "</body></html>");
 
 		tac.setOpaque(false);
@@ -225,7 +239,7 @@ public class TChat extends JFrame implements Runnable{
 		}
 		System.out.println(textWithSeparators);
 
-		tac.setText("<html><body style='width:" + (size - 150) + "px;padding:15px;display:block;'>"
+		tac.setText("<html><body style='width:" + (size - 310) + "px;padding:15px;display:block;'>"
 						+ textWithSeparators + "</body></html>");
 
 		tac.setOpaque(false);
