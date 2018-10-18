@@ -80,9 +80,9 @@ public class TChat extends JFrame implements Runnable{
 		pNorth.setLayout(new FlowLayout());
 		pCenter.setLayout(new FlowLayout());
 		pSouth.setLayout(new FlowLayout());
-		getContentPane().add(pNorth, BorderLayout.NORTH);
-		getContentPane().add(pCenter, BorderLayout.CENTER);
-		getContentPane().add(pSouth, BorderLayout.SOUTH);
+		//getContentPane().add(pNorth, BorderLayout.NORTH);
+		//getContentPane().add(pCenter, BorderLayout.CENTER);
+		//getContentPane().add(pSouth, BorderLayout.SOUTH);
 		chatPanel = new JPanel(); /////
 		loadImageIcon();
 		
@@ -95,6 +95,7 @@ public class TChat extends JFrame implements Runnable{
 		
 		bReport = new JButton(ii2);
 		pNorth.add(bReport);
+		getContentPane().add(pNorth, BorderLayout.NORTH);
 		chatPanel.setPreferredSize(new Dimension(400, 350)); ////////////말풍선을 못줄여서 차라리 창크기를 늘렸음.............
 		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.PAGE_AXIS));
 		chatPanel.add(Box.createVerticalGlue());
@@ -109,7 +110,7 @@ public class TChat extends JFrame implements Runnable{
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		pCenter.add(scroll);
-
+		//getContentPane().add(pCenter, BorderLayout.CENTER);
 
 		sp = new JScrollPane(chatPanel);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -119,14 +120,16 @@ public class TChat extends JFrame implements Runnable{
 
 		tf = new JTextField();
 		tf.setColumns(34);
-		getContentPane().add(tf);
-		getContentPane().setVisible(true);
+		pCenter.add(tf);
+		getContentPane().add(pCenter, BorderLayout.CENTER);
+		
 		tf.setEnabled(true);
 		tf.requestFocus();////////
 		
 		cSend = new JButton("Send");
-		getContentPane().add(cSend);
-
+		pSouth.add(cSend);
+		getContentPane().add(pSouth, BorderLayout.SOUTH);
+		getContentPane().setVisible(true);
 		setUI();
 	}
 	void setUI(){
