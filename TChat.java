@@ -203,7 +203,7 @@ public class TChat extends JFrame implements Runnable{
 
 		chatPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		Rectangle rect = chatPanel.getBounds();
-		Rectangle r2 = scroll.getViewport().getVisibleRect();
+		Rectangle r2 = sp.getViewport().getVisibleRect();
 		chatPanel.scrollRectToVisible(new Rectangle((int) rect.getWidth(), 
 				(int) rect.getHeight(), (int) r2.getWidth(), (int) r2.getHeight()));
 		revalidate();
@@ -245,7 +245,7 @@ public class TChat extends JFrame implements Runnable{
 
 		chatPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		Rectangle rect = chatPanel.getBounds();
-		Rectangle r2 = scroll.getViewport().getVisibleRect();
+		Rectangle r2 = sp.getViewport().getVisibleRect();
 		chatPanel.scrollRectToVisible(new Rectangle((int) rect.getWidth(), 
 				(int) rect.getHeight(), (int) r2.getWidth(), (int) r2.getHeight()));
 		revalidate();
