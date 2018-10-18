@@ -26,7 +26,7 @@ public class TChat extends JFrame implements Runnable{
 	JLabel Id;
     JTextField tf;
 	JButton bBack, cSend, bReport; //뒤로 가기, 메시지 보내기, 신고 버튼
-	ImageIcon ii1, ii2;
+	ImageIcon ii1, ii2, ii3;
 	String ip = "127.0.0.1";
 	int port = 5000;
 	Socket s;
@@ -52,8 +52,8 @@ public class TChat extends JFrame implements Runnable{
 
 	TChat(){
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("ID를 입력하세요 : ");
+		//BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		//System.out.println("ID를 입력하세요 : ");
 		//try{
 		//	myId = br.readLine();
 		//}catch(IOException ie){}
@@ -81,7 +81,7 @@ public class TChat extends JFrame implements Runnable{
 		pNorth.setBackground(Color.white);
 		pCenter.setLayout(new FlowLayout());
 		pCenter.setBackground(Color.white);
-		pSouth.setLayout(new FlowLayout());
+		pSouth.setLayout(new BorderLayout());
 		pSouth.setBackground(Color.white);
 		chatPanel = new JPanel();
 		chatPanel.setBackground(Color.white);
@@ -105,7 +105,7 @@ public class TChat extends JFrame implements Runnable{
 		bReport.setContentAreaFilled(false);
 		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.PAGE_AXIS));
 		chatPanel.add(Box.createVerticalGlue());
-		
+
 		sp = new JScrollPane(chatPanel);
 		//sp.setViewportView(chatPanel);
 		sp.setPreferredSize(new Dimension(390, 350));
@@ -119,12 +119,9 @@ public class TChat extends JFrame implements Runnable{
 		pCenter.add(sp);
 		getContentPane().add(pCenter, BorderLayout.CENTER);
 
-
-		
-
 		tf = new JTextField();
 		tf.setColumns(34);
-		pSouth.add(tf, BorderLayout.CENTER);
+		pSouth.add(tf, BorderLayout.NORTH);
 		tf.setEnabled(true);
 		tf.requestFocus();
 
@@ -191,7 +188,7 @@ public class TChat extends JFrame implements Runnable{
 											  beginIndex + maximumSize));
 		}
 		System.out.println(textWithSeparators);
-//원래 size-150,이었음.//150일때 너무 왼쪽. 50이면 더왼쪽. 242가 오른쪽이랑 비슷.
+
 		tac.setText("<html><body style='width:" + (size - 265) + "px;padding:15px;display:block;'>"
 						+ textWithSeparators + "</body></html>");
 
@@ -202,7 +199,7 @@ public class TChat extends JFrame implements Runnable{
 
 		chatPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		Rectangle rect = chatPanel.getBounds();
-		Rectangle r2 = scroll.getViewport().getVisibleRect();
+		Rectangle r2 = sp.getViewport().getVisibleRect();
 		chatPanel.scrollRectToVisible(new Rectangle((int) rect.getWidth(),
 				(int) rect.getHeight(), (int) r2.getWidth(), (int) r2.getHeight()));
 		revalidate();
@@ -212,7 +209,7 @@ public class TChat extends JFrame implements Runnable{
 	void appendR(String str) {
 		RightArrowBubble rightArrowBubble = new RightArrowBubble();
 
-		final int size = 500;
+		final int size = 400;
 		rightArrowBubble.setMaximumSize(new Dimension(size, size));
 
 		JLabel tac = new JLabel();
@@ -233,8 +230,8 @@ public class TChat extends JFrame implements Runnable{
 											  beginIndex + maximumSize));
 		}
 		System.out.println(textWithSeparators);
-//원래 size-150이었음
-		tac.setText("<html><body style='width:" + (size - 514) + "px;padding:15px;display:block;'>"
+
+		tac.setText("<html><body style='width:" + (size - 200) + "px;padding:15px;display:block;'>"
 						+ textWithSeparators + "</body></html>");
 
 		tac.setOpaque(false);
@@ -244,7 +241,7 @@ public class TChat extends JFrame implements Runnable{
 
 		chatPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		Rectangle rect = chatPanel.getBounds();
-		Rectangle r2 = scroll.getViewport().getVisibleRect();
+		Rectangle r2 = sp.getViewport().getVisibleRect();
 		chatPanel.scrollRectToVisible(new Rectangle((int) rect.getWidth(),
 				(int) rect.getHeight(), (int) r2.getWidth(), (int) r2.getHeight()));
 		revalidate();
