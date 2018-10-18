@@ -20,8 +20,8 @@ public class TChat extends JFrame implements Runnable{
 	Container cp;
 	JPanel pNorth, pCenter, pSouth;
 	//JTextArea ta; 이거 이제 안씀
-	JPanel chatPanel;/////////////
-	JScrollPane scroll;//////////////
+	JPanel chatPanel;
+	JScrollPane scroll;
 	JScrollPane sp;
 	JLabel Id;
     JTextField tf;
@@ -78,8 +78,11 @@ public class TChat extends JFrame implements Runnable{
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 74, 3));
 		pNorth = new JPanel(); pCenter = new JPanel(); pSouth = new JPanel();
 		pNorth.setLayout(new FlowLayout());
-		pCenter.setLayout(new FlowLayout());
-		pSouth.setLayout(new FlowLayout());
+		pCenter.setLayout(new GridLayout(1,1));
+		pSouth.setLayout(new BorderLayout());
+		//pSouth.setLayout(new GridLayout(2,1));
+		///////pSouth.setLayout(new BoxLayout(pSouth, BoxLayout.Y_AXIS));
+		//////////pSouth.add(Box.createVerticalGlue());
 		//getContentPane().add(pNorth, BorderLayout.NORTH);
 		//getContentPane().add(pCenter, BorderLayout.CENTER);
 		//getContentPane().add(pSouth, BorderLayout.SOUTH);
@@ -112,29 +115,24 @@ public class TChat extends JFrame implements Runnable{
 		chatPanel.setEnabled(true);
 		//chatPanel.setLineWrap(true);
 	
-		scroll = new JScrollPane();
-		//scroll.setViewportView(chatPanel);
-		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		pCenter.add(scroll);
-		//getContentPane().add(pCenter, BorderLayout.CENTER);
-
-		sp = new JScrollPane(chatPanel);
+		sp = new JScrollPane();
+		sp.setViewportView(chatPanel);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		getContentPane().setVisible(true);
-		getContentPane().add(sp);
+		//getContentPane().setVisible(true);
+		//getContentPane().add(sp);
+		pCenter.add(sp);
+		getContentPane().add(pCenter, BorderLayout.CENTER);
+		//getContentPane().add(pCenter, BorderLayout.CENTER);
 
 		tf = new JTextField();
 		tf.setColumns(34);
-		pCenter.add(tf);
-		getContentPane().add(pCenter, BorderLayout.CENTER);
-		
+		pSouth.add(tf, BorderLayout.CENTER);
 		tf.setEnabled(true);
 		tf.requestFocus();////////
 		
 		cSend = new JButton(ii3);
-		pSouth.add(cSend);
+		pSouth.add(cSend, BorderLayout.SOUTH);
 		getContentPane().add(pSouth, BorderLayout.SOUTH);
 		getContentPane().setVisible(true);
 		cSend.setBorderPainted(false);
