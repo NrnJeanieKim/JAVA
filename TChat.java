@@ -78,15 +78,19 @@ public class TChat extends JFrame implements Runnable{
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 74, 3));
 		pNorth = new JPanel(); pCenter = new JPanel(); pSouth = new JPanel();
 		pNorth.setLayout(new FlowLayout());
+		pNorth.setBackground(Color.white);
 		pCenter.setLayout(new GridLayout(1,1));
+		pCenter.setBackground(Color.white);
 		pSouth.setLayout(new BorderLayout());
+		pSouth.setBackground(Color.white);
 		//pSouth.setLayout(new GridLayout(2,1));
 		///////pSouth.setLayout(new BoxLayout(pSouth, BoxLayout.Y_AXIS));
 		//////////pSouth.add(Box.createVerticalGlue());
 		//getContentPane().add(pNorth, BorderLayout.NORTH);
 		//getContentPane().add(pCenter, BorderLayout.CENTER);
 		//getContentPane().add(pSouth, BorderLayout.SOUTH);
-		chatPanel = new JPanel(); /////
+		chatPanel = new JPanel(); 
+		chatPanel.setBackground(Color.white);
 		loadImageIcon();
 		
 		bBack = new JButton(ii1);
@@ -113,7 +117,7 @@ public class TChat extends JFrame implements Runnable{
 		//sp.setViewportView(chatPanel);
 		sp.setPreferredSize(new Dimension(390, 350));
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
 			public void adjustmentValueChanged(AdjustmentEvent e) {  
 				e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
@@ -193,8 +197,8 @@ public class TChat extends JFrame implements Runnable{
 		}
 		System.out.println(textWithSeparators);
 
-		tac.setText("<html><body style='width:" + (size - 242) + "px;padding:15px;display:block;'>" //150일때 너무 왼쪽. 50이면 더왼쪽. 242가 오른쪽이랑 비슷.
-						+ textWithSeparators + "</body></html>");
+		tac.setText("<html><body style='width:" + (size - 265) + "px;padding:15px;display:block;'>" //150일때 너무 왼쪽. 50이면 더왼쪽. 242가 오른쪽이랑 비슷.
+						+ textWithSeparators + "</body></html>"); //근데 말풍선도 같이움직이는게문제...........긴함...........................
 
 		tac.setOpaque(false);
 		leftArrowBubble.add(tac, BorderLayout.NORTH);
@@ -235,7 +239,7 @@ public class TChat extends JFrame implements Runnable{
 		}
 		System.out.println(textWithSeparators);
 
-		tac.setText("<html><body style='width:" + (size - 310) + "px;padding:15px;display:block;'>"
+		tac.setText("<html><body style='width:" + (size - 415) + "px;padding:15px;display:block;'>"
 						+ textWithSeparators + "</body></html>");
 
 		tac.setOpaque(false);
