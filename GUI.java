@@ -4,7 +4,7 @@ import java.awt.event.*;
 import javax.imageio.*;
 import java.io.*;
 import java.util.ArrayList;
-class GUI extends JFrame{
+class GUI extends JFrame {
   String tinder ="";
   JPanel jp1,jp2,jp3,lower,upper;
   JButton leftBt,rightBt;
@@ -16,8 +16,7 @@ class GUI extends JFrame{
   int counter =1;
   ImageIcon img;
   JLabel proLb;
-
-  /////////////
+  Container cp;
   //String FName = ""; //여자면 mList.txt, 남자면 wList.txt 읽기. 아이디 인덱스 맞춰서...
 	BufferedReader br = null;
 	File myFile, yourFile; //내 좋/싫 저장하는 리스트, 상대방 리스트(사진 넘길때마다 새로 돌아감)
@@ -127,7 +126,7 @@ class GUI extends JFrame{
     init();
   }
   void init(){
-    Container cp  = getContentPane();
+    cp  = getContentPane();
     cp.setFocusable(true);
     cp.requestFocus();
 	  cp.addKeyListener(new MyKeyListener());
@@ -187,10 +186,17 @@ class GUI extends JFrame{
     Boolean keep =false;
 	  void askChat(TChat tc){
 		  if (ask){ //대화묻는팝업창띄우기.
-			AskChat ac = new AskChat(this,counter,myName,tc);
+			AskChat ac = new AskChat(this,tc);
       if(ac.poped) keep = true;
 		  }
 	  }
+    void focus(){
+       requestFocusInWindow();
+      //toFront();
+       //cp.setFocusable(true);
+      // cp.requestFocus();
+    }
+
 
 }
 
@@ -200,16 +206,16 @@ class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 �
 	 JLabel match, heart; //"It's Match!", 하트그림
 	 JButton sendButton, keepButton; //"send a message", "Keep Playing"
 	 Container cp;
-   String myName;
-   int counter;
+
+
    Boolean poped=false;
    TChat tc;
    AskChat(){}
-	 AskChat(GUI gui,int counter, String myName, TChat tc){
+	 AskChat(GUI gui,TChat tc){
 		 this.gui = gui;
-     this.counter = counter;
-     this.myName = myName;
+
      this.tc = tc;
+
 
 		 init();
 	  }
@@ -224,8 +230,13 @@ class AskChat extends JFrame implements ActionListener{ //팝업창 띄우기 �
      }else {
        this.setVisible(false);
        poped = true;
+       gui.focus();
+       gui.change(gui.counter,gui.myName);
+       System.out.println("Change has made");
+       //this.dispose();
+       return;
+    }
      }
-   }
 
 	 void init(){
 		cp = getContentPane();
