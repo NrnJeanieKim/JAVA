@@ -20,13 +20,13 @@ public class TChat extends JFrame implements Runnable{
 	Container cp;
 	JPanel pNorth, pCenter, pSouth;
 	//JTextArea ta; 이거 이제 안씀
-	JPanel chatPanel;
-	JScrollPane scroll;
+	JPanel chatPanel;/////////////
+	JScrollPane scroll;//////////////
 	JScrollPane sp;
 	JLabel Id;
     JTextField tf;
 	JButton bBack, cSend, bReport; //뒤로 가기, 메시지 보내기, 신고 버튼
-	ImageIcon ii1, ii2, ii3;
+	ImageIcon ii1, ii2;
 	String ip = "127.0.0.1";
 	int port = 5000;
 	Socket s;
@@ -36,7 +36,7 @@ public class TChat extends JFrame implements Runnable{
     DataInputStream dis;
 	String line;
 	String report = "[ 비속어, 스팸 등의 이유로 신고 처리되었습니다.\n 5회 누적시 계정이 정지됩니다.\n 3초 후 대화가 종료됩니다.]";
-	String myId = "내아이디";
+	String myId = Login.loginid;
 	String yourId = "너의아이디";
 	//////////////////
 	InetAddress inetAddress;
@@ -47,25 +47,25 @@ public class TChat extends JFrame implements Runnable{
 	MulticastSocket multicastSocket = null;
 	int first = 1; //static으로 만들면..........상대방한테는안뜨나..????
 	static final long serialVersionUID = 1L;//////////////////
-	
+
 
 
 	TChat(){
-		
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("ID를 입력하세요 : ");
-		// try{
-		// 	myId = br.readLine();
-		// }catch(IOException ie){}
+		//try{
+		//	myId = br.readLine();
+		//}catch(IOException ie){}
 		// init();
-		inetAddress = null;	
+		inetAddress = null;
 		  try{
 			  inetAddress = InetAddress.getByName("224.1.1.0"); // 224.0.0.0 to 239.255.255.255 범위 사용해야 멀티소켓 됨...
 		  }catch(UnknownHostException ue){
 			  System.out.println("올바르지 않은 아이피");}
 		 try {
 			 //Socket 열기
-				datagramSocket = new DatagramSocket(); 
+				datagramSocket = new DatagramSocket();
 		   System.out.println("*********** " + myId + "님 접속 ***********");
 
 	   } catch (IOException e) {
@@ -78,69 +78,55 @@ public class TChat extends JFrame implements Runnable{
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 74, 3));
 		pNorth = new JPanel(); pCenter = new JPanel(); pSouth = new JPanel();
 		pNorth.setLayout(new FlowLayout());
-		pNorth.setBackground(Color.white);
-		pCenter.setLayout(new GridLayout(1,1));
-		pCenter.setBackground(Color.white);
-		pSouth.setLayout(new BorderLayout());
-		pSouth.setBackground(Color.white);
-		//pSouth.setLayout(new GridLayout(2,1));
-		///////pSouth.setLayout(new BoxLayout(pSouth, BoxLayout.Y_AXIS));
-		//////////pSouth.add(Box.createVerticalGlue());
-		//getContentPane().add(pNorth, BorderLayout.NORTH);
-		//getContentPane().add(pCenter, BorderLayout.CENTER);
-		//getContentPane().add(pSouth, BorderLayout.SOUTH);
-		chatPanel = new JPanel(); 
-		chatPanel.setBackground(Color.white);
+		pCenter.setLayout(new FlowLayout());
+		pSouth.setLayout(new FlowLayout());
+		getContentPane().add(pNorth, BorderLayout.NORTH);
+		getContentPane().add(pCenter, BorderLayout.CENTER);
+		getContentPane().add(pSouth, BorderLayout.SOUTH);
+		chatPanel = new JPanel(); /////
 		loadImageIcon();
-		
+
 		bBack = new JButton(ii1);
 		pNorth.add(bBack);
-		bBack.setBorderPainted(false);
-		bBack.setFocusPainted(false);
-		bBack.setContentAreaFilled(false);
-		
+
 		//대화하는 상대방 아이디가 뜨게 해야 함! (구현 안 됨)
 		Id = new JLabel("Chat ID");
 		pNorth.add(Id);
-		
+
 		bReport = new JButton(ii2);
 		pNorth.add(bReport);
-		getContentPane().add(pNorth, BorderLayout.NORTH);
-		bReport.setBorderPainted(false);
-		bReport.setFocusPainted(false);
-		bReport.setContentAreaFilled(false);
-		////////chatPanel.setPreferredSize(new Dimension(400, 350)); ////////////말풍선을 못줄여서 차라리 창크기를 늘렸음.............
+
 		chatPanel.setLayout(new BoxLayout(chatPanel, BoxLayout.PAGE_AXIS));
 		chatPanel.add(Box.createVerticalGlue());
-	
+		//ta = new JTextArea(22, 34);
+		pCenter.add(chatPanel);
+		getContentPane().setVisible(true);
+		//chatPanel.setEdichatPanelble(false);
+		chatPanel.setEnabled(true);
+		//chatPanel.setLineWrap(true);
+		scroll = new JScrollPane();
+		scroll.setViewportView(chatPanel);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		pCenter.add(scroll);
+
+
 		sp = new JScrollPane(chatPanel);
-		//sp.setViewportView(chatPanel);
-		sp.setPreferredSize(new Dimension(390, 350));
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sp.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
-			public void adjustmentValueChanged(AdjustmentEvent e) {  
-				e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
-			}
-		});
-		pCenter.add(sp);
-		getContentPane().add(pCenter, BorderLayout.CENTER);
-		//getContentPane().add(pCenter, BorderLayout.CENTER);
+		getContentPane().setVisible(true);
+		getContentPane().add(sp);
 
 		tf = new JTextField();
 		tf.setColumns(34);
-		pSouth.add(tf, BorderLayout.CENTER);
+		getContentPane().add(tf);
+		getContentPane().setVisible(true);
 		tf.setEnabled(true);
 		tf.requestFocus();////////
-		
-		cSend = new JButton(ii3);
-		pSouth.add(cSend, BorderLayout.SOUTH);
-		getContentPane().add(pSouth, BorderLayout.SOUTH);
-		getContentPane().setVisible(true);
-		cSend.setBorderPainted(false);
-		cSend.setFocusPainted(false);
-		cSend.setContentAreaFilled(false);
-		
+
+		cSend = new JButton("Send");
+		getContentPane().add(cSend);
+
 		setUI();
 	}
 	void setUI(){
@@ -158,7 +144,6 @@ public class TChat extends JFrame implements Runnable{
 		setSize(400, 540);
 		setLocation(500, 100);
 		setVisible(true);
-		getContentPane().setBackground(Color.white);
 	}
 	void loadImageIcon(){
 		try{
@@ -166,8 +151,6 @@ public class TChat extends JFrame implements Runnable{
 			ii1 = new ImageIcon(bi);
 			BufferedImage bi2 = ImageIO.read(new File("imgs/report4.png"));
 			ii2 = new ImageIcon(bi2);
-			BufferedImage bi3 = ImageIO.read(new File("imgs/send4.png"));
-			ii3 = new ImageIcon(bi3);
 		}catch(IOException ie){
 		}
 	}
@@ -197,18 +180,18 @@ public class TChat extends JFrame implements Runnable{
 		}
 		System.out.println(textWithSeparators);
 
-		tac.setText("<html><body style='width:" + (size - 265) + "px;padding:15px;display:block;'>" //150일때 너무 왼쪽. 50이면 더왼쪽. 242가 오른쪽이랑 비슷.
-						+ textWithSeparators + "</body></html>"); //근데 말풍선도 같이움직이는게문제...........긴함...........................
+		tac.setText("<html><body style='width:" + (size - 150) + "px;padding:15px;display:block;'>"
+						+ textWithSeparators + "</body></html>");
 
 		tac.setOpaque(false);
 		leftArrowBubble.add(tac, BorderLayout.NORTH);
 
-		chatPanel.add(leftArrowBubble);     
+		chatPanel.add(leftArrowBubble);
 
 		chatPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		Rectangle rect = chatPanel.getBounds();
-		Rectangle r2 = sp.getViewport().getVisibleRect();
-		chatPanel.scrollRectToVisible(new Rectangle((int) rect.getWidth(), 
+		Rectangle r2 = scroll.getViewport().getVisibleRect();
+		chatPanel.scrollRectToVisible(new Rectangle((int) rect.getWidth(),
 				(int) rect.getHeight(), (int) r2.getWidth(), (int) r2.getHeight()));
 		revalidate();
 		repaint();
@@ -239,18 +222,18 @@ public class TChat extends JFrame implements Runnable{
 		}
 		System.out.println(textWithSeparators);
 
-		tac.setText("<html><body style='width:" + (size - 415) + "px;padding:15px;display:block;'>"
+		tac.setText("<html><body style='width:" + (size - 150) + "px;padding:15px;display:block;'>"
 						+ textWithSeparators + "</body></html>");
 
 		tac.setOpaque(false);
 		rightArrowBubble.add(tac, BorderLayout.NORTH);
 
-		chatPanel.add(rightArrowBubble);     
+		chatPanel.add(rightArrowBubble);
 
 		chatPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		Rectangle rect = chatPanel.getBounds();
-		Rectangle r2 = sp.getViewport().getVisibleRect();
-		chatPanel.scrollRectToVisible(new Rectangle((int) rect.getWidth(), 
+		Rectangle r2 = scroll.getViewport().getVisibleRect();
+		chatPanel.scrollRectToVisible(new Rectangle((int) rect.getWidth(),
 				(int) rect.getHeight(), (int) r2.getWidth(), (int) r2.getHeight()));
 		revalidate();
 		repaint();
@@ -269,7 +252,7 @@ public class TChat extends JFrame implements Runnable{
 				//datagramSocket.receive(datagramPacket2);
 				multicastSocket.receive(datagramPacket);
 	// 6. 수신된 메시지 출력
-				
+
 				String msg = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
 				if(msg.startsWith(myId)){
 					popCount++;
@@ -287,7 +270,7 @@ public class TChat extends JFrame implements Runnable{
 				if (msg.startsWith(myId)){
 					first++;
 				}else if (first ==1){
-					new AskYes();
+					// new AskYes();
 					append(msg);
 					first++;
 				}else if(msg.equals(report)){
@@ -362,7 +345,6 @@ public class TChat extends JFrame implements Runnable{
 				}
 			}
 		 }
-		 
 	 }
 	 void pop(){
 		 try{
@@ -375,23 +357,22 @@ public class TChat extends JFrame implements Runnable{
 		 }catch(IOException ie){
 		 }
 	 }
-	 
-}
-class AskYes extends JFrame implements Runnable{ //상대방이 대화를 시작했을 때, 대화할 거냐고 물어보는 클래스
- int yesNo;
- TChat tc ;
- AskYes(){
-	 new Thread(this).start();
-	 }
- AskYes(TChat tc){
-	 this.tc = tc;
-	 new Thread(this).start();
  }
-	public void run(){
-	 yesNo = JOptionPane.showConfirmDialog(this, "좋아요한 상대방의 대화 요청이 있습니다. 확인을 누르시면 대화창으로 이동합니다.", "선택", JOptionPane.OK_CANCEL_OPTION);
-	 if(yesNo==0){
-		 tc.init();
-	 }
- }
+ class AskYes extends JFrame implements Runnable{ //상대방이 대화를 시작했을 때, 대화할 거냐고 물어보는 클래스
+	int yesNo;
+	TChat tc ;
+	AskYes(){
+		new Thread(this).start();
+		}
+	AskYes(TChat tc){
+		this.tc = tc;
+		new Thread(this).start();
+	}
+	 public void run(){
+		yesNo = JOptionPane.showConfirmDialog(this, "좋아요한 상대방의 대화 요청이 있습니다. 확인을 누르시면 대화창으로 이동합니다.", "선택", JOptionPane.OK_CANCEL_OPTION);
+		if(yesNo==0){
+			tc.init();
+		}
+	}
 }
 ////어디선가 datagramSocket.close();해줘야함.다보내고나서닫아야함...
