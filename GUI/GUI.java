@@ -110,11 +110,11 @@ class GUI{
 		downP.setBackground(new Color(-1));
 		mainL.add(downP);
 
-		rightL = new JLabel(likeI);
+		rightL = new JLabel(disLikeI);
 		rightL.setBounds(118, 11, 50, 50);
 		downP.add(rightL);
 
-		leftL = new JLabel(disLikeI);
+		leftL = new JLabel(likeI);
 		leftL.setBounds(220, 11, 50, 50);
 		downP.add(leftL);
 		init();
