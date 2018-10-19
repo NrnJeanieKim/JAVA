@@ -1,266 +1,204 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.imageio.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import java.io.*;
 import java.util.ArrayList;
-class GUI extends JFrame {
-  String tinder ="";
-  JPanel jp1,jp2,jp3,lower,upper;
-  JButton leftBt,rightBt;
-  JLabel logoLb, photoLb;
-  Load l;
-  String topBanner = tinder+"TopBanner.jpg";
-  String rightImage = tinder+"Like.jpg";
-  String leftImage = tinder+"disLike.jpg";
-  int counter =1;
-  ImageIcon img;
-  JLabel proLb;
-  Container cp;
-  //String FName = ""; //ì—¬ìë©´ mList.txt, ë‚¨ìë©´ wList.txt ì½ê¸°. ì•„ì´ë”” ì¸ë±ìŠ¤ ë§ì¶°ì„œ...
+
+
+class GUI{
+	JFrame jf;
+	String tinder ="";
+	JPanel jp1,jp2,jp3,lower,upper,downP;
+	JLabel leftL,rightL;
+	JLabel logoLb, photoLb;
+	Load l;
+	int counter =1;
+	ImageIcon img, mainI,frameIc,likeI,disLikeI;
+	JLabel proLb,mainL;
+	Container cp;
+		
 	BufferedReader br = null;
-	File myFile, yourFile; //ë‚´ ì¢‹/ì‹« ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸, ìƒëŒ€ë°© ë¦¬ìŠ¤íŠ¸(ì‚¬ì§„ ë„˜ê¸¸ë•Œë§ˆë‹¤ ìƒˆë¡œ ëŒì•„ê°)
-	FileReader fr = null; //ìƒëŒ€ë°© ì„±ë³„ ë¦¬ìŠ¤íŠ¸ ì½ê¸°
+	File myFile, yourFile; //³» ÁÁ/½È ÀúÀåÇÏ´Â ¸®½ºÆ®, »ó´ë¹æ ¸®½ºÆ®(»çÁø ³Ñ±æ¶§¸¶´Ù »õ·Î µ¹¾Æ°¨)
+	FileReader fr = null; //»ó´ë¹æ ¼ºº° ¸®½ºÆ® ÀĞ±â
 	FileWriter writer = null;
 	final String LIKE = "1";
 	final String DISLIKE = "2";
-	String yourName = ""; //ë¡œê·¸ì¸í•œ ì‚¬ëŒ ì´ë¦„. ì—¬ìw1~w10, ë‚¨ì m1~m10 ë‚´ì´ë¦„ì •í•˜ëŠ”ë²•â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
-	String myIdx; //ë‚´ ì¸ë±ìŠ¤. 1~10ë²ˆì¤‘ í•˜ë‚˜ë¡œ ì •í•´ì ¸ ìˆìŒ(ë¡œê·¸ì¸ì‹œ ë§¤ì¹­ë¨)
-	String yourIdx; //ë‚´ê°€ ì§€ê¸ˆ ì¢‹ì•„ìš”/ì‹«ì–´ìš”ë¥¼ íŒë‹¨í•˜ëŠ” ìƒëŒ€ì˜ ì¸ë±ìŠ¤. 1ì—ì„œ ì‹œì‘í•´ì„œ í‚¤ë³´ë“œê°’ ì…ë ¥ í• ë•Œë§ˆë‹¤ 1ì”© ì¦ê°€.
-	String myName = ""; //ë‚´ ì„±ë³„ê³¼ ë°˜ëŒ€ë˜ëŠ” ì„±ë³„+yourIdx ìƒëŒ€ë°© ì´ë¦„ ì •í•˜ëŠ” ë²•â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
-	String yourAnswer = ""; //ìƒëŒ€ë°©ì˜ ëŒ€ë‹µì „ì²´
-	boolean ask = false; //ì¢‹ì•„ìš”-ì¢‹ì•„ìš”ë©´ trueê°€ ë¨->ëŒ€í™” ë¬»ëŠ” íŒì—… ëœ¸
-  TChat tc;
-  /*class RightLeft implements ActionListener{
-    RightLeft(){
-      leftBt.addActionListener(this);
-      rightBt.addActionListener(this);
-    }
-    /*public void actionPerformed(ActionEvent ae){
-      counter++;
-      try{
-        l.pick(counter,myName);
-        System.out.println(l.ptPath);
-        change(l.ptPath);
-      }catch(NullPointerException ne){
-          System.out.println(" ë§¤ì¹­ í•  ì‚¬ëŒì´ ì—†ë‹¤");
-          // jp2.setVisible(false);
-          // JLabel noPic = new JLabel();
-          // noPic.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"NoOne.jpg"))));
-          // JPanel noOne = new JPanel();
-          // noOne.add(noPic);
-          // jp2.add(noOne);
-          change();
-      }
-    }*/
-  void change(int counter,String gender){///////í”„ë¡œí•„ ì‚¬ì§„ ë° ë‚´ìš© ì „í™˜
-    try{
-      if(gender.equals("female")){
-        l.pick(counter,"male");
-        photoLb.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"mPhoto/"+l.ptPath))));
-      }else {
-        l.pick(counter,"female");
-        photoLb.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+l.ptPath))));
-      }
-      proLb.setText(l.profile);
-    }catch(IOException ie){
-    }
-  }
-  void change(){
-    JLabel noPic = new JLabel();
-    try{
-      noPic.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"NoOne.jpg"))));
-      lower.add(noPic,BorderLayout.CENTER);
-    }catch(IOException ie){
-    }
-  }
-  String fName;
-  GUI(){}
-  GUI(String name){
-    tc = new TChat();
-    myName = name;
-    fName = name;
-    myIdx = myName.substring(1);
-    if(myName.contains("w"))myName = "female";
-    else myName = "male";
-	  myFile = new File(fName+"_like.txt"); //ë‚´ ì¢‹/ì‹« ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸
-    try{
-	     writer = new FileWriter(myFile, false);
-      l = new Load();
-      l.pick(Integer.parseInt(myIdx),myName);
-      leftBt = new JButton(new ImageIcon(ImageIO.read(new File(leftImage))));
-      rightBt = new JButton(new ImageIcon(ImageIO.read(new File(rightImage))));
-      logoLb = new JLabel(new ImageIcon(ImageIO.read(new File(topBanner))));
-      if(myName.equals("male")){
-        l.pick(1,"female");
-        img = new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+l.ptPath)));
-      }else{
-        l.pick(1,"male");
-        img = new ImageIcon(ImageIO.read(new File(tinder+"mPhoto/"+l.ptPath)));
-      }
-      photoLb= new JLabel(img);
-      proLb = new JLabel(l.profile);
-    }catch(IOException ie){
-    }
-    ////////////TOP//////////////
-    jp1 = new JPanel(new FlowLayout());
-    jp1.add(logoLb);
-    ///////////MIDDLE////////////
-    upper = new JPanel(new FlowLayout());
-    upper.add(proLb);
-    jp2 = new JPanel();
-    photoLb.setPreferredSize(new Dimension(300,310));;
-    jp2.add(photoLb,BorderLayout.SOUTH);
-    jp2.add(upper,BorderLayout.NORTH);
-    ////////////BOTTOM//////////
-    jp3 = new JPanel(new FlowLayout());
-    jp3.add(leftBt);
-    jp3.add(rightBt);
-    /////////////////////////////
-    lower = new JPanel();
-    lower.setLayout(new BorderLayout());
-    lower.add(jp1,BorderLayout.NORTH);
-    lower.add(jp2,BorderLayout.CENTER);
-    lower.add(jp3,BorderLayout.SOUTH);
-    add(lower);
-    init();
-  }
-  void init(){
-    cp  = getContentPane();
-    cp.setFocusable(true);
-    cp.requestFocus();
-	  cp.addKeyListener(new MyKeyListener());
-    setTitle("Tinder");
-    setSize(400,540);
-    setLocation(500,100);
-    setVisible(true);
-	  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-  }
-  //ë‚´ë¶€í´ë˜ìŠ¤ KeyListener!!!!!!!
-	 class MyKeyListener extends KeyAdapter{
-     	  public void keyPressed(KeyEvent e){
-     			try{
-            counter++;
-     				String ptName = myName+myIdx;
-     				yourFile = new File(l.index+"_like.txt");
-     				fr = new FileReader(yourFile);
-     			}catch(FileNotFoundException fe){
-          }catch(NullPointerException ne){
-              System.out.println(" ë§¤ì¹­ í•  ì‚¬ëŒì´ ì—†ë‹¤");
-              return;
-            }
-     			if (yourFile.exists()){
-     				br = new BufferedReader(fr);
-     			}
-     			int key = e.getKeyCode();
-     			switch(key){
-     				case KeyEvent.VK_LEFT: //ì‹«ì–´ìš”
-     				try{
-     					writer.write(DISLIKE+"*");
-     					writer.flush();
-     				}catch(IOException ie){} break;
-     				case KeyEvent.VK_RIGHT: //ì¢‹ì•„ìš”
-     				try{
-              writer.write(LIKE+"*");
-     					writer.flush();
-     					String line = "";//ì¸ë±ìŠ¤ í‚¤ì›Œê°€ë©° ì ‘ê·¼í•´ì•¼í•¨â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
-     					if (yourFile.exists()){
-                System.out.println(myIdx+"myIdx");
-     					   if((line = br.readLine())!=null){
-     							 yourAnswer = line;
-                  String[] elements = yourAnswer.split("\\*");
-                  System.out.println(elements.length);
-                     if (elements[Integer.parseInt(myIdx)-1].equals("1")){ //ìƒëŒ€ë°© íŒŒì¼ ì—´ì–´ì„œ ë‚´ ì¸ë±ìŠ¤ê°€ likeë©´ ëŒ€í™”ì°½ ì—¬ëŠ” ë©”ì†Œë“œë¡œ ë„˜ì–´ê°.
-         					  		ask = true;
-         						  	askChat(tc);
-         						 }
-                   }
-     						}
-     				   }catch(IOException ie){}
-                 catch(ArrayIndexOutOfBoundsException se){break;}
-            break;
-     			}
-          if(!ask)change(counter,myName);
-     		}
-      }
-    Boolean keep =false;
-	  void askChat(TChat tc){
-		  if (ask){ //ëŒ€í™”ë¬»ëŠ”íŒì—…ì°½ë„ìš°ê¸°.
-			AskChat ac = new AskChat(this,tc);
-      if(ac.poped) keep = true;
+	String yourName = ""; //·Î±×ÀÎÇÑ »ç¶÷ ÀÌ¸§. ¿©ÀÚw1~w10, ³²ÀÚ m1~m10 ³»ÀÌ¸§Á¤ÇÏ´Â¹ı¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú
+	String myIdx; //³» ÀÎµ¦½º. 1~10¹øÁß ÇÏ³ª·Î Á¤ÇØÁ® ÀÖÀ½(·Î±×ÀÎ½Ã ¸ÅÄªµÊ)
+	String yourIdx; //³»°¡ Áö±İ ÁÁ¾Æ¿ä/½È¾î¿ä¸¦ ÆÇ´ÜÇÏ´Â »ó´ëÀÇ ÀÎµ¦½º. 1¿¡¼­ ½ÃÀÛÇØ¼­ Å°º¸µå°ª ÀÔ·Â ÇÒ¶§¸¶´Ù 1¾¿ Áõ°¡.
+	String myName = ""; //³» ¼ºº°°ú ¹İ´ëµÇ´Â ¼ºº°+yourIdx »ó´ë¹æ ÀÌ¸§ Á¤ÇÏ´Â ¹ı¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú
+	String yourAnswer = ""; //»ó´ë¹æÀÇ ´ë´äÀüÃ¼
+	boolean ask = false; //ÁÁ¾Æ¿ä-ÁÁ¾Æ¿ä¸é true°¡ µÊ->´ëÈ­ ¹¯´Â ÆË¾÷ ¶ä
+	TChat tc;
+
+	void change(int counter,String gender){///////ÇÁ·ÎÇÊ »çÁø ¹× ³»¿ë ÀüÈ¯
+		try{
+		  if(gender.equals("female")){
+			l.pick(counter,"male");
+			photoLb.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"mPhoto/"+l.ptPath))));
+		  }else {
+			l.pick(counter,"female");
+			photoLb.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+l.ptPath))));
 		  }
-	  }
-    void focus(){
-       //requestFocusInWindow();
-      //toFront();
-       //cp.setFocusable(true);
-       cp.requestFocus();
-    }
-
-
-}
-
-class AskChat extends JFrame implements ActionListener{ //íŒì—…ì°½ ë„ìš°ê¸° ìœ„í•œ í´ë˜ìŠ¤. Chooseì™¸ë¶€.
-	 GUI gui; //ë„ìš°ê³  ë‚˜ì„œ cs.ask = falseë¡œ ë§Œë“¤ì–´ì¤˜ì•¼ í•¨.
-	 JPanel upPanel, middlePanel, downPanel; //ë§¤ì¹˜, í•˜íŠ¸, ëŒ€í™”/ê³„ì†ê³ ë¥´ê¸° ë¶€ì°©ë˜ëŠ” JPanel
-	 JLabel match, heart; //"It's Match!", í•˜íŠ¸ê·¸ë¦¼
-	 JButton sendButton, keepButton; //"send a message", "Keep Playing"
-	 Container cp;
-
-
-   Boolean poped=false;
-   TChat tc;
-   AskChat(){}
-	 AskChat(GUI gui,TChat tc){
-		 this.gui = gui;
-
-     this.tc = tc;
-
-
-		 init();
-	  }
-   public void actionPerformed(ActionEvent ae){/////////////////////////sendButton ì„ íƒì‹œ ìƒëŒ€ë°©ì—ê²Œ íŒì—… ë„ì›Œì•¼í•¨.//////////////////////
-     Object o = ae.getSource();
-     if(o==sendButton){
-      this.setVisible(false);
-      gui.setVisible(false);
-       //new TChat();
-       tc.pop();
-       tc.init();
-     }else {
-       this.setVisible(false);
-       poped = true;
-       gui.focus();
-       gui.change(gui.counter,gui.myName);
-       System.out.println("Change has made");
-       //this.dispose();
-       return;
-    }
-     }
-
-	 void init(){
-		cp = getContentPane();
-		upPanel = new JPanel(); middlePanel = new JPanel(); downPanel = new JPanel();
-		cp.add(upPanel, BorderLayout.NORTH);
-		cp.add(middlePanel, BorderLayout.CENTER);
-		cp.add(downPanel, BorderLayout.SOUTH);
-		match = new JLabel("It's a Match!");
-		heart = new JLabel("heart"); //í•˜íŠ¸ì•„ì´ì½˜ ë„£ê¸°â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
-		sendButton = new JButton("Send a Message");
-    sendButton.addActionListener(this);
-		keepButton = new JButton("Keep Playing");
-    keepButton.addActionListener(this);
-		//íŒ¨ë„ ë‚´ë¶€ëŠ” FLOWLAYOUTìœ¼ë¡œë°”ê¿”ì„œí•´ì•¼í• ë“¯??
-		upPanel.add(match);
-		middlePanel.add(heart);
-		downPanel.add(sendButton); downPanel.add(keepButton);
-		setUI();
-	  }
-	 void setUI(){
-		setSize(350, 500);
-		setLocation(500,300);
-		setVisible(true);
-		setResizable(true);
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //ì´ ì„¸ ë²„íŠ¼ì€ ì—†ì•¨ìˆ˜ì—†ë‚˜
+		  proLb.setText(l.profile);
+		}catch(IOException ie){
+		}
 	}
+	  void change(){
+		JLabel noPic = new JLabel();
+		try{
+		  noPic.setIcon(new ImageIcon(ImageIO.read(new File(tinder+"NoOne.jpg"))));
+		  lower.add(noPic,BorderLayout.CENTER);
+		}catch(IOException ie){
+		}
 	  }
+	  String fName;
+	  GUI(){}
+	  GUI(String name){
+		jf = new JFrame();
+		frameIc = new ImageIcon("Tinder Logo.png");
+		jf.setIconImage(frameIc.getImage());
+		
+		mainI = new ImageIcon("Tinder Choose.jpg");
+		mainL = new JLabel(mainI);
+		jf.add(mainL);
+
+		tc = new TChat();
+		myName = name;
+		fName = name;
+		myIdx = myName.substring(1);
+		if(myName.contains("w"))myName = "female";
+		else myName = "male";
+		myFile = new File(fName+"_like.txt"); //³» ÁÁ/½È ÀúÀåÇÏ´Â ¸®½ºÆ®
+		try{
+			writer = new FileWriter(myFile, false);
+			l = new Load();
+			l.pick(Integer.parseInt(myIdx),myName);
+
+			likeI = new ImageIcon("Like.png");
+			disLikeI = new ImageIcon("disLike.png");
+
+			if(myName.equals("male")){
+				l.pick(1,"female");
+				img = new ImageIcon(ImageIO.read(new File(tinder+"wPhoto/"+l.ptPath)));
+			}else{
+				l.pick(1,"male");
+				img = new ImageIcon(ImageIO.read(new File(tinder+"mPhoto/"+l.ptPath)));
+			}
+			photoLb= new JLabel(img);
+			photoLb.setLayout(null);
+			photoLb.setBounds(100,84,200,267);
+			mainL.add(photoLb);
+
+			proLb = new JLabel(l.profile);
+			proLb.setLayout(null);
+			proLb.setBounds(47,340,400,100);
+			proLb.setFont(new Font("±¼¸²", 0, 10));
+			proLb.setHorizontalTextPosition(SwingConstants.CENTER);
+			proLb.setVerticalAlignment(SwingConstants.CENTER);
+			mainL.add(proLb);
+
+		}catch(IOException ie){}
+
+		// ÇÏ´Ü ÆĞ³Î 
+		downP = new JPanel();
+		downP.setLayout(null);
+		downP.setBounds(0,425,400,109);
+		downP.setBackground(new Color(-3355444));
+		mainL.add(downP);
+
+		rightL = new JLabel(likeI);
+		rightL.setBounds(118, 11, 50, 50);
+		downP.add(rightL);
+
+		leftL = new JLabel(disLikeI);
+		leftL.setBounds(220, 11, 50, 50);
+		downP.add(leftL);
+		init();
+	  }
+	void init(){
+		jf.addKeyListener(new MyKeyListener());
+		jf.setTitle("Tinder");
+		jf.setSize(400,540);
+		jf.setLocation(500,100);
+		jf.setVisible(true);
+		jf.setResizable(false);
+		jf.getContentPane().add(mainL, BorderLayout.CENTER);
+		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+		class MyKeyListener extends KeyAdapter{
+			public void keyPressed(KeyEvent e){
+				try{
+					counter++;
+					String ptName = myName+myIdx;
+					yourFile = new File(l.index+"_like.txt");
+					fr = new FileReader(yourFile);
+				}catch(FileNotFoundException fe){
+				}catch(NullPointerException ne){
+					System.out.println(" ¸ÅÄª ÇÒ »ç¶÷ÀÌ ¾ø´Ù");
+					return;
+				}
+					if (yourFile.exists()){
+					br = new BufferedReader(fr);
+					}	
+					int key = e.getKeyCode();
+					switch(key){
+						case KeyEvent.VK_LEFT: //½È¾î¿ä
+						try{
+							writer.write(DISLIKE+"*");
+							writer.flush();
+						}catch(IOException ie){} break;
+						case KeyEvent.VK_RIGHT: //ÁÁ¾Æ¿ä
+						try{
+						  writer.write(LIKE+"*");
+						writer.flush();
+						String line = "";//ÀÎµ¦½º Å°¿ö°¡¸ç Á¢±ÙÇØ¾ßÇÔ¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú
+						if (yourFile.exists()){
+						System.out.println(myIdx+"myIdx");
+							if((line = br.readLine())!=null){
+								yourAnswer = line;
+								String[] elements = yourAnswer.split("\\*");
+								System.out.println(elements.length);
+								if (elements[Integer.parseInt(myIdx)-1].equals("1")){ //»ó´ë¹æ ÆÄÀÏ ¿­¾î¼­ ³» ÀÎµ¦½º°¡ like¸é ´ëÈ­Ã¢ ¿©´Â ¸Ş¼Òµå·Î ³Ñ¾î°¨.
+									ask = true;
+									askChat(tc);
+								}
+							}
+						}
+				   }catch(IOException ie){}
+			 catch(ArrayIndexOutOfBoundsException se){break;}
+		break;
+			}
+		if(!ask)change(counter,myName);
+		}
+		}
+		Boolean keep =false;
+		void askChat(TChat tc){
+		//   TChat ts = tc; /////just
+		//   int answer =JOptionPane.showConfirmDialog(this, "ÁÁ¾Æ¿äÇÑ »ó´ë¹æÀÇ ´ëÈ­ ¿äÃ»ÀÌ ÀÖ½À´Ï´Ù. È®ÀÎÀ» ´©¸£½Ã¸é ´ëÈ­Ã¢À¸·Î ÀÌµ¿ÇÕ´Ï´Ù.", "¼±ÅÃ", JOptionPane.OK_CANCEL_OPTION);
+		//   if(answer == JOptionPane.YES_OPTION){
+		//   tc.pop();
+		//   tc.init();
+		// }else{
+		//   keep = true;
+		// //gui.focus();
+		// change(counter,myName);
+		// System.out.println("Change has made");
+		// // dispose();
+		if (ask){ //´ëÈ­¹¯´ÂÆË¾÷Ã¢¶ç¿ì±â.
+		AskChat ac = new AskChat(this,tc);
+		if(ac.poped) keep = true;
+		}
+
+
+
+		}
+		void focus(){
+		//requestFocusInWindow();
+		//toFront();
+		//cp.setFocusable(true);
+		cp.requestFocus();
+		}
+		}
