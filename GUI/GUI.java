@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.imageio.*;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.io.*;
@@ -20,20 +21,20 @@ class GUI{
 	Container cp;
 		
 	BufferedReader br = null;
-	File myFile, yourFile; //ë‚´ ì¢‹/ì‹« ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸, ìƒëŒ€ë°© ë¦¬ìŠ¤íŠ¸(ì‚¬ì§„ ë„˜ê¸¸ë•Œë§ˆë‹¤ ìƒˆë¡œ ëŒì•„ê°)
-	FileReader fr = null; //ìƒëŒ€ë°© ì„±ë³„ ë¦¬ìŠ¤íŠ¸ ì½ê¸°
+	File myFile, yourFile; //³» ÁÁ/½È ÀúÀåÇÏ´Â ¸®½ºÆ®, »ó´ë¹æ ¸®½ºÆ®(»çÁø ³Ñ±æ¶§¸¶´Ù »õ·Î µ¹¾Æ°¨)
+	FileReader fr = null; //»ó´ë¹æ ¼ºº° ¸®½ºÆ® ÀĞ±â
 	FileWriter writer = null;
 	final String LIKE = "1";
 	final String DISLIKE = "2";
-	String yourName = ""; //ë¡œê·¸ì¸í•œ ì‚¬ëŒ ì´ë¦„. ì—¬ìw1~w10, ë‚¨ì m1~m10 ë‚´ì´ë¦„ì •í•˜ëŠ”ë²•â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
-	String myIdx; //ë‚´ ì¸ë±ìŠ¤. 1~10ë²ˆì¤‘ í•˜ë‚˜ë¡œ ì •í•´ì ¸ ìˆìŒ(ë¡œê·¸ì¸ì‹œ ë§¤ì¹­ë¨)
-	String yourIdx; //ë‚´ê°€ ì§€ê¸ˆ ì¢‹ì•„ìš”/ì‹«ì–´ìš”ë¥¼ íŒë‹¨í•˜ëŠ” ìƒëŒ€ì˜ ì¸ë±ìŠ¤. 1ì—ì„œ ì‹œì‘í•´ì„œ í‚¤ë³´ë“œê°’ ì…ë ¥ í• ë•Œë§ˆë‹¤ 1ì”© ì¦ê°€.
-	String myName = ""; //ë‚´ ì„±ë³„ê³¼ ë°˜ëŒ€ë˜ëŠ” ì„±ë³„+yourIdx ìƒëŒ€ë°© ì´ë¦„ ì •í•˜ëŠ” ë²•â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
-	String yourAnswer = ""; //ìƒëŒ€ë°©ì˜ ëŒ€ë‹µì „ì²´
-	boolean ask = false; //ì¢‹ì•„ìš”-ì¢‹ì•„ìš”ë©´ trueê°€ ë¨->ëŒ€í™” ë¬»ëŠ” íŒì—… ëœ¸
+	String yourName = ""; //·Î±×ÀÎÇÑ »ç¶÷ ÀÌ¸§. ¿©ÀÚw1~w10, ³²ÀÚ m1~m10 ³»ÀÌ¸§Á¤ÇÏ´Â¹ı¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú
+	String myIdx; //³» ÀÎµ¦½º. 1~10¹øÁß ÇÏ³ª·Î Á¤ÇØÁ® ÀÖÀ½(·Î±×ÀÎ½Ã ¸ÅÄªµÊ)
+	String yourIdx; //³»°¡ Áö±İ ÁÁ¾Æ¿ä/½È¾î¿ä¸¦ ÆÇ´ÜÇÏ´Â »ó´ëÀÇ ÀÎµ¦½º. 1¿¡¼­ ½ÃÀÛÇØ¼­ Å°º¸µå°ª ÀÔ·Â ÇÒ¶§¸¶´Ù 1¾¿ Áõ°¡.
+	String myName = ""; //³» ¼ºº°°ú ¹İ´ëµÇ´Â ¼ºº°+yourIdx »ó´ë¹æ ÀÌ¸§ Á¤ÇÏ´Â ¹ı¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú
+	String yourAnswer = ""; //»ó´ë¹æÀÇ ´ë´äÀüÃ¼
+	boolean ask = false; //ÁÁ¾Æ¿ä-ÁÁ¾Æ¿ä¸é true°¡ µÊ->´ëÈ­ ¹¯´Â ÆË¾÷ ¶ä
 	TChat tc;
 
-	void change(int counter,String gender){///////í”„ë¡œí•„ ì‚¬ì§„ ë° ë‚´ìš© ì „í™˜
+	void change(int counter,String gender){///////ÇÁ·ÎÇÊ »çÁø ¹× ³»¿ë ÀüÈ¯
 		try{
 		  if(gender.equals("female")){
 			l.pick(counter,"male");
@@ -71,7 +72,7 @@ class GUI{
 		myIdx = myName.substring(1);
 		if(myName.contains("w"))myName = "female";
 		else myName = "male";
-		myFile = new File(fName+"_like.txt"); //ë‚´ ì¢‹/ì‹« ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸
+		myFile = new File(fName+"_like.txt"); //³» ÁÁ/½È ÀúÀåÇÏ´Â ¸®½ºÆ®
 		try{
 			writer = new FileWriter(myFile, false);
 			l = new Load();
@@ -98,12 +99,12 @@ class GUI{
 			proLb.setLineWrap(true);
 			proLb.setEditable(false);
 			proLb.setFocusable(false);
-			proLb.setFont(new Font("êµ´ë¦¼", 0, 12));
+			proLb.setFont(new Font("±¼¸²", 0, 12));
 			mainL.add(proLb);
 
 		}catch(IOException ie){}
 
-		// í•˜ë‹¨ íŒ¨ë„ 
+		// ÇÏ´Ü ÆĞ³Î 
 		downP = new JPanel();
 		downP.setLayout(null);
 		downP.setBounds(0,425,400,109);
@@ -129,8 +130,21 @@ class GUI{
 		jf.getContentPane().add(mainL, BorderLayout.CENTER);
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+		/*class MyActionListener implements ActionListener{
+			public void actionPerformed(ActionEvent ae){
+				ac.addWindowListener(new WindowAdapter(){
+		@Override
+			public void windowClosed(WindowEvent we){
+			AskChat ac = (AskChat) we.getWindow();
+			toFront();
+			this.requestFocusInWindow();
+		}
+	});
+			}
+		}*/
 		class MyKeyListener extends KeyAdapter{
 			public void keyPressed(KeyEvent e){
+				System.out.println("Å° ´­¸²");
 				try{
 					counter++;
 					String ptName = myName+myIdx;
@@ -138,7 +152,7 @@ class GUI{
 					fr = new FileReader(yourFile);
 				}catch(FileNotFoundException fe){
 				}catch(NullPointerException ne){
-					System.out.println(" ë§¤ì¹­ í•  ì‚¬ëŒì´ ì—†ë‹¤");
+					System.out.println(" ¸ÅÄª ÇÒ »ç¶÷ÀÌ ¾ø´Ù");
 					return;
 				}
 					if (yourFile.exists()){
@@ -146,23 +160,23 @@ class GUI{
 					}	
 					int key = e.getKeyCode();
 					switch(key){
-						case KeyEvent.VK_LEFT: //ì‹«ì–´ìš”
+						case KeyEvent.VK_LEFT: //½È¾î¿ä
 						try{
 							writer.write(DISLIKE+"*");
 							writer.flush();
 						}catch(IOException ie){} break;
-						case KeyEvent.VK_RIGHT: //ì¢‹ì•„ìš”
+						case KeyEvent.VK_RIGHT: //ÁÁ¾Æ¿ä
 						try{
 						  writer.write(LIKE+"*");
 						writer.flush();
-						String line = "";//ì¸ë±ìŠ¤ í‚¤ì›Œê°€ë©° ì ‘ê·¼í•´ì•¼í•¨â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…â˜…
+						String line = "";//ÀÎµ¦½º Å°¿ö°¡¸ç Á¢±ÙÇØ¾ßÇÔ¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú¡Ú
 						if (yourFile.exists()){
 						System.out.println(myIdx+"myIdx");
 							if((line = br.readLine())!=null){
 								yourAnswer = line;
 								String[] elements = yourAnswer.split("\\*");
 								System.out.println(elements.length);
-								if (elements[Integer.parseInt(myIdx)-1].equals("1")){ //ìƒëŒ€ë°© íŒŒì¼ ì—´ì–´ì„œ ë‚´ ì¸ë±ìŠ¤ê°€ likeë©´ ëŒ€í™”ì°½ ì—¬ëŠ” ë©”ì†Œë“œë¡œ ë„˜ì–´ê°.
+								if (elements[Integer.parseInt(myIdx)-1].equals("1")){ //»ó´ë¹æ ÆÄÀÏ ¿­¾î¼­ ³» ÀÎµ¦½º°¡ like¸é ´ëÈ­Ã¢ ¿©´Â ¸Ş¼Òµå·Î ³Ñ¾î°¨.
 									ask = true;
 									askChat(tc);
 								}
@@ -172,13 +186,14 @@ class GUI{
 			 catch(ArrayIndexOutOfBoundsException se){break;}
 		break;
 			}
+			//counter++;
 		if(!ask)change(counter,myName);
 		}
 		}
 		Boolean keep =false;
 		void askChat(TChat tc){
 		//   TChat ts = tc; /////just
-		//   int answer =JOptionPane.showConfirmDialog(this, "ì¢‹ì•„ìš”í•œ ìƒëŒ€ë°©ì˜ ëŒ€í™” ìš”ì²­ì´ ìˆìŠµë‹ˆë‹¤. í™•ì¸ì„ ëˆ„ë¥´ì‹œë©´ ëŒ€í™”ì°½ìœ¼ë¡œ ì´ë™í•©ë‹ˆë‹¤.", "ì„ íƒ", JOptionPane.OK_CANCEL_OPTION);
+		//   int answer =JOptionPane.showConfirmDialog(this, "ÁÁ¾Æ¿äÇÑ »ó´ë¹æÀÇ ´ëÈ­ ¿äÃ»ÀÌ ÀÖ½À´Ï´Ù. È®ÀÎÀ» ´©¸£½Ã¸é ´ëÈ­Ã¢À¸·Î ÀÌµ¿ÇÕ´Ï´Ù.", "¼±ÅÃ", JOptionPane.OK_CANCEL_OPTION);
 		//   if(answer == JOptionPane.YES_OPTION){
 		//   tc.pop();
 		//   tc.init();
@@ -188,18 +203,110 @@ class GUI{
 		// change(counter,myName);
 		// System.out.println("Change has made");
 		// // dispose();
-		if (ask){ //ëŒ€í™”ë¬»ëŠ”íŒì—…ì°½ë„ìš°ê¸°.
-		AskChat ac = new AskChat(this,tc);
-		if(ac.poped) keep = true;
-		}
-
-
-
+			if (ask){ //´ëÈ­¹¯´ÂÆË¾÷Ã¢¶ç¿ì±â.
+				AskChat ac = new AskChat(this,tc);
+					if(ac.poped) keep = true;
+					//focus();
+			}
 		}
 		void focus(){
-		//requestFocusInWindow();
+		jf.requestFocus();
 		//toFront();
-		//cp.setFocusable(true);
+		cp.setFocusable(true);
 		cp.requestFocus();
 		}
 		}
+
+class AskChat extends JDialog implements ActionListener{ //ÆË¾÷Ã¢ ¶ç¿ì±â À§ÇÑ Å¬·¡½º. Choose¿ÜºÎ.
+	 GUI gui; //¶ç¿ì°í ³ª¼­ cs.ask = false·Î ¸¸µé¾îÁà¾ß ÇÔ.
+	 JPanel upPanel, middlePanel, downPanel; //¸ÅÄ¡, ÇÏÆ®, ´ëÈ­/°è¼Ó°í¸£±â ºÎÂøµÇ´Â JPanel
+	 ImageIcon matchI, heartI, sendI, keepI;
+	 JLabel match, heart; //"It's Match!", ÇÏÆ®±×¸²
+	 JButton sendButton, keepButton; //"send a message", "Keep Playing"
+	 Container cp;
+   Boolean poped=false;
+   TChat tc;
+   AskChat(){}
+	 AskChat(GUI gui,TChat tc){
+		 this.gui = gui;
+     this.tc = tc;
+     setModal(true);
+		  init();
+	  }
+   public void actionPerformed(ActionEvent ae){/////////////////////////sendButton ¼±ÅÃ½Ã »ó´ë¹æ¿¡°Ô ÆË¾÷ ¶ç¿ö¾ßÇÔ.//////////////////////
+     Object o = ae.getSource();
+     if(o==sendButton){
+       this.setVisible(false);
+      //gui.setVisible(false);
+      tc.pop();
+      tc.init();
+     }else if(o==keepButton){
+		 
+		 this.dispose();
+      this.setVisible(false);
+      poped = true;
+      //gui.counter++;//¿©±â¼­ ¶ÇÇÏ¸é °Ç³Ê¶Ü
+	  //gui.counter--; ¿©±â¼­ÁÙÀÌ¸é ¶Ç °°Àº¾Ö³ª¿È.
+      gui.change(gui.counter,gui.myName);
+	  
+	  gui.jf.requestFocus();
+      System.out.println("Change has made");
+      //dispose();
+      return;
+    }
+     }
+
+	 void init(){
+		cp = getContentPane();
+		upPanel = new JPanel(); middlePanel = new JPanel(new FlowLayout()); downPanel = new JPanel();
+		upPanel.setBackground(Color.white);
+		middlePanel.setBackground(Color.white);
+		downPanel.setBackground(Color.white);
+		cp.add(upPanel, BorderLayout.NORTH);
+		cp.add(middlePanel, BorderLayout.CENTER);
+		cp.add(downPanel, BorderLayout.SOUTH);
+		try{ //°¢ ºÎºĞ¿¡ ÀÌ¹ÌÁö ³Ö±â
+			//BufferedImage bii = ImageIO.read(new File("imgs/Match.png"));
+			//matchI = new ImageIcon(bii);
+			matchI = new ImageIcon("imgs/Match.jpg");
+			BufferedImage bii2 = ImageIO.read(new File("imgs/heart.jpg"));
+			heartI = new ImageIcon(bii2);
+			//BufferedImage bii3 = ImageIO.read(new File("imgs/Send_Message.jpg"));
+			//sendI = new ImageIcon(bii3);
+			sendI = new ImageIcon("imgs/Send_Message.jpg");
+			//BufferedImage bii4 = ImageIO.read(new File("imgs/Keep_Playing.jpg"));
+			//keepI = new ImageIcon(bii4);
+			keepI = new ImageIcon("imgs/Keep_Playing.jpg");
+		}catch(IOException ie){}
+
+		match = new JLabel(matchI);
+		heart = new JLabel(heartI); 
+		sendButton = new JButton(sendI);
+		sendButton.setBorderPainted( false );
+		sendButton.setFocusPainted(false);
+		sendButton.setContentAreaFilled(false);
+		sendButton.addActionListener(this);
+		keepButton = new JButton(keepI);
+		keepButton.setBorderPainted( false );
+		keepButton.setFocusPainted(false);
+		keepButton.setContentAreaFilled(false);
+		keepButton.addActionListener(this);
+		//ÆĞ³Î ³»ºÎ´Â FLOWLAYOUTÀ¸·Î¹Ù²ã¼­ÇØ¾ßÇÒµí??
+		upPanel.setPreferredSize(new Dimension(380, 150));
+		upPanel.add(match);
+		//cp.add(upPanel, BorderLayout.NORTH);
+		middlePanel.add(heart);
+		//cp.add(middlePanel, BorderLayout.CENTER);
+		downPanel.add(sendButton); downPanel.add(keepButton);
+		//cp.add(downPanel, BorderLayout.SOUTH);
+		setUI();
+	  }
+	 void setUI(){
+		setSize(350, 500);
+		setLocation(500,300);
+		setVisible(true);
+		setResizable(true);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //ÀÌ ¼¼ ¹öÆ°Àº ¾ø¾Ù¼ö¾ø³ª
+	}
+	
+	  }
